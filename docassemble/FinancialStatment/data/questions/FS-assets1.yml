@@ -1,0 +1,217 @@
+---
+objects:    
+  - houses: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True) 
+  - auto: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True) 
+  - retPlans: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
+  - savingsPlan: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
+  - lifeInsurance: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
+  - deferredPlan: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
+  - otherAssets: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
+---
+if: expensesDone
+comment: |
+  Page 3 - Assets (a), collect property info. All asset categories have iterations.
+question: |  
+fields:
+  - html: <span class="groupTitle">Real Estate</span>
+  - Do you own any properties?: ynHouse
+    datatype: yesnoradio
+  - How many properties do you own?: houses.target_number
+    datatype: integer
+    show if:
+      variable: ynHouse
+      is: True
+section: Assets
+progress: 66
+---
+if: ynHouse
+question: |    
+subquestion: | 
+  % if houses.target_number > 1:
+    Please enter information related to your ${ ordinal(i) } property.
+  % else:
+    Please enter information related to your property. 
+  % endif
+fields:
+  - Owner's full name on the property title: houses[i].name.text
+  - Property street address: houses[i].houseStreet
+    address autocomplete: True
+  - City/town: houses[i].houseCity
+  - State: houses[i].houseState
+    code: |
+      states_list()
+  - Zip: houses[i].houseZip
+    required: False    
+  - Property fair market value: houses[i].hMarketVal
+    datatype: currency
+  - Property mortgate you still owe: houses[i].hMort
+    datatype: currency
+section: Assets
+progress: 66
+---
+if: ynHouse
+code: |    
+  houses[i].name.text
+  houses[i].location = houses[i].houseStreet + ',' + houses[i].houseCity + ',' + houses[i].houseState + ',' + houses[i].houseZip 
+  
+  houses[i].complete = True   
+---
+code: |  
+  count = 0
+  for y in houses:
+    count += 1
+  if count == houses.target_number:
+    houseDone = True  
+  #Accumulate proptert value after the last property's info collected.
+  if houseDone:       
+	  TotalHouseVal = 0
+    houses[0].hEquity = 0
+    for y in houses:           		
+		  y.hEquity = y.hMarketVal - y.hMort
+		  TotalHouseVal += y.hEquity
+---
+if: ynHouse == False
+code: |    
+  houses[0].name.text = ''    
+  houses.target_number = 0
+  houses[0].complete = True
+  TotalHouseVal = 0
+  houseDone = True
+---
+if: houseDone
+comment: |
+  Page 3 - Assets (b), collect automobile info.  
+question: |
+fields:
+  - html: <span class="groupTitle">Motor Vehicle</span>
+  - Do you own any automobile?: ynCar
+    datatype: yesnoradio
+  - How many automobiles do you own?: auto.target_number
+    datatype: integer
+    show if:
+      variable: ynCar
+      is: True
+section: Assets
+progress: 68
+---
+if: ynCar
+question: |    
+subquestion: |
+  % if auto.target_number > 1:
+    Please enter information related to your ${ ordinal(i) } automobile.
+  % else:
+    Please enter information related to your automobile. 
+  % endif
+fields:   
+  - What is the model of this automobile?: auto[i].name.text
+  - How much is it worth today: auto[i].carValue
+    datatype: currency
+  - How much auto loan do you still owe: auto[i].carLoanAmt
+    datatype: currency
+section: Assets
+progress: 68
+---
+if: ynCar
+code: |      
+  auto[i].name.text
+  auto[i].carValue   
+  auto[i].complete = True
+---
+code: |    
+  count = 0
+  for y in auto:
+    count += 1
+  if count == auto.target_number:
+    carDone = True 
+  #Accumulate automobiles value after the last auto's info collected.
+  if carDone:       
+    auto[0].equity = 0
+    TotalAutoEqt = 0 
+	  for y in auto:           			  
+		  y.equity = max(0, y.carValue - y.carLoanAmt)      
+      TotalAutoEqt += y.equity
+---
+if: ynCar == False
+code: | 
+  auto[0].name.text = ''
+  auto.target_number = 0
+  auto[0].complete = True
+  TotalAutoEqt = 0
+  carDone = True
+---
+if: carDone
+comment: |
+  Page 3 - Assets (c), collect retirement funds info. This should not apply to retirees.
+question: |
+subquestion: |
+	Enter information related to your retirement plans, including company provided plans and personal IRA plans, such as IRA, Keogh, 401(k), Pension, Profit Sharing plans and others.
+fields:
+  - html: <span class="groupTitle">Retirement Plans</span>
+  - Are you participating any retirement plan?: ynRetPlan
+    datatype: yesnoradio
+  - How many retirement plans are you participating?: retPlans.target_number
+    datatype: integer
+    show if:
+      variable: ynRetPlan
+      is: True
+section: Assets
+progress: 70
+---
+if: ynRetPlan
+question: |    
+subquestion: |
+  % if retPlans.target_number > 1:
+    Enter information related to your ${ ordinal(i) } retirement plan.
+  % else:
+    Enter information related to your retirement plan. 
+  % endif
+fields:   
+  - Retirement plan name: retPlans[i].name.text
+  - How much is this retirement plan worth today: retPlans[i].amt
+    datatype: currency
+    help: |
+      Use your benefit statement to find this number, it is called the  "Present Value" or "Lump Sum" of your benefit when you are eligible to retire.
+	- Do you have an account number for it?: retPlans[i].ynRetPlanAcct
+	  datatype: yesnoradio
+  - Financial institution name: retPlans[i].instituteName
+	  show if:
+		  variable: retPlans[i].ynRetPlanAcct
+		  is: True
+  - Account number for this plan: retPlans[i].acctNum
+	  show if:
+		  variable: retPlans[i].ynRetPlanAcct
+		  is: True
+section: Assets
+progress: 70
+---
+if: ynRetPlan
+code: |      
+  retPlans[i].name.text
+  retPlans[i].amt
+  retPlans[i].complete = True
+---
+code: |
+  count = 0
+  for y in retPlans:
+    count += 1
+  if count == retPlans.target_number:
+    retPlansDone = True  
+  #Accumulate retirement plans values after the last plan's info is collected.
+  if retPlansDone:         
+    retPlans[0].fullName = ''
+    totRetPlanVal = 0
+	  for y in retPlans:    
+      totRetPlanVal += y.amt
+      if y.ynRetPlanAcct:
+        y.fullName = y.name.text + '/' + y.instituteName + '/' + y.acctNum
+      else:
+        y.fullName = y.name.text   
+---
+if: ynRetPlan == False
+code: | 
+  # Set defaults - more fields to be added
+  retPlans[0].name.text = ''  
+  retPlans.target_number = 0
+  retPlans[0].complete = True
+  totRetPlanVal = 0
+  retPlansDone = True

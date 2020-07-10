@@ -1,0 +1,79 @@
+---
+objects:  
+  - debts: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True) 
+---
+if: assetsDone
+comment: Iterate each debt type separately.
+question: |  
+fields:
+  - html: <span class="groupTitle">Liabilities</span><br/>
+      Do not include expenses, mortgage or auto loans, you already entered them earlier.
+  - Do you owe any detbs?: ynDebts
+    datatype: yesnoradio
+  - How many debts do you owe?: debts.target_number
+    datatype: integer
+    show if:
+      variable: ynDebts
+      is: True
+section: Debts
+progress: 82
+---
+if: ynDebts
+question: |    
+subquestion: | 
+  % if debts.target_number > 1:
+    Please enter information related to your ${ ordinal(i) } debt.
+  % else:
+    Please enter information related to your debt. 
+  % endif
+fields:
+  - Creditor's name: debts[i].name.text  
+  - What kind of debt is this?: debts[i].type    
+  - How much did you borrow: debts[i].borrowedAmt
+    datatype: currency
+  - When did you borrow the money: debts[i].date
+    datatype: date
+  - How much do you still owe?: debts[i].amtDue
+    datatype: currency
+  - How often do you paid back for this debt?: debts[i].PayFrequency
+    datatype: radio
+    choices:
+      - Monthly: 12
+      - Weekly: 52
+    help: |
+      If the frequency is not listed here, enter it as monthly.
+  - How much do you pay back each period?: debts[i].payment
+    datatype: currency
+section: Debts
+progress: 90
+---
+if: ynDebts
+code: |    
+  debts[i].name.text
+  debts[i].date
+  debts[i].complete = True   
+  
+  count = 0
+  for y in debts:
+    count += 1
+  if count == debts.target_number:
+    debtsDone = True
+
+  #Accumulate debts value after the last debt's info collected.
+  if debtsDone:       
+    TotalDebtDue = 0
+    TotalDebtPmt = 0
+    debts[0].wklyPmt = 0   
+	  for y in debts:         
+      tmpAnnPmt = int(y.PayFrequency) * y.payment
+		  y.wklyPmt = round(tmpAnnPmt/52, 0)
+		  TotalDebtDue += y.amtDue
+      TotalDebtPmt += y.wklyPmt 
+---
+if: ynDebts == False
+code: |    
+  # Set defaults if no debt.   
+  debts[0].name.text = ''      
+  debts[0].amtDue = 0  
+  debts.target_number = 0
+  debtsDone = True  

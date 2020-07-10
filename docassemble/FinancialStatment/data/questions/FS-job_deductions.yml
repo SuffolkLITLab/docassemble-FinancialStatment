@@ -1,0 +1,338 @@
+---
+comment: |
+  Collect pay deductions from each job.
+if: employer[i].wage != None or employer[i].mthReceipts > 0
+question: |
+subquestion: |
+  Use your pay stub to find your deduction information. **The deduction period must match the pay period. **For example, if you entered your pay as weekly pay, the deduction must be weekly deduction. 
+  
+  **If a question is not applicable to you, enter a zero, you cannot leave it blank. **
+
+  % if employer.target_number > 1:
+  This is for your **${ ordinal(i) }** job.
+  % endif
+fields:  
+  - html: <span class="groupTitle">Itemized Deductions from Gross Income</span>
+  - Federal income tax deductions: employer[i].fedTaxDed
+    datatype: currency   
+    default: 0
+  - Number of federal exemptions claimed: employer[i].fedNumClaimed
+    datatype: integer
+    default: 0
+  - State income tax deductions: employer[i].stateTaxDed
+    datatype: currency
+    default: 0
+  - Number of state exemptions claimed: employer[i].stateNumClaimed
+    datatype: integer
+    default: 0
+  - F.I.C.A. and Medicare: employer[i].medicareTaxDed
+    datatype: currency
+    default: 0
+  - Medical insurance: employer[i].medInsTaxDed
+    datatype: currency
+    default: 0
+  - Union dues: employer[i].unionDues
+    datatype: currency
+    default: 0
+  - html: <span class="groupTitle">Other Deductions from Salary/Wages per pay period</span>
+  - Credit union deduction: employer[i].creditUnion
+    datatype: currency
+    default: 0
+  - Credit union deduction type: employer[i].creditType
+    datatype: checkboxes
+    choices: 
+      Loan repayment: loan
+      Savings: savings
+    none of the above: False
+    js show if:
+      val("employer[i].creditUnion") > 0
+  - Savings deduction: employer[i].savingsDed
+    datatype: currency
+    default: 0
+  - Retirement savings: employer[i].retDed
+    datatype: currency
+    default: 0
+  - Other deductions per pay period: employer[i].otherDed
+    datatype: currency
+    default: 0
+    help: |
+      Add up Dental, Child support, Deferred Compensation and 401(k), then enter the result.
+  - Other deductions type: employer[i].otherDedType    
+    hint: |
+      Ener all that applicable: Dental, Child support, Deferred Compensation, 401(k).
+    js show if:
+      val("employer[i].otherDed") > 0
+section: From_Jobs
+progress: 50
+---
+comment: |
+  Convert pay into weekly amounts and add them up.
+if: employed
+code: |  
+  employer[i].name
+  employer[i].wage
+  if employer[i].jobType == "selfEmp":
+    #a. Ask questions for schedule A.
+    mthReceipts
+    ynSeasonal
+        
+    #b. Add up self-employment expenses     
+    totMthExp = 0  
+    mthIncome = 0
+    wklyIncome = 0
+    basicExp = goodsCost + advertise + badDebts + freight
+    propertyExp = mortgageInt + loanInt + depletion + equipmtBought + equipmtRent + otherProperty + propertyRepairs
+    wagesExp = commissionPaid + wagesPaid + pensionPaid + eeBens
+    officeExp = utilities + officeExpenses + laundry + supplies 
+    profExp = duesPub + legalFees + travel + meals
+    autoExp = gas + autoIns + autoMtnance + autoReg 
+    otherExp = OtherIns1 + OtherIns2 + taxes + otherExp1 + otherExp2               
+    totMthExp = basicExp + propertyExp + wagesExp + + officeExp + profExp + autoExp + otherExp
+  
+    #c. Calculate income    
+    mthIncome = mthReceipts - totMthExp 
+    wklyIncome = round(mthIncome/4.3, 0)	
+    
+    if pctDone:
+      employer[i].fedTaxDed 
+      employer[i].complete = True    
+  else:
+    employer[i].fedTaxDed 
+    employer[i].complete = True
+---
+code: |
+  count = 0
+  for y in employer:
+    count += 1
+  if count == employer.target_number:
+    jobIncomeDone = True
+
+  #Calculate income from all jobs after the last job's info collected.
+  if jobIncomeDone:     
+    fullTimeWkPay = 0
+    partTimeWkPay = 0
+    selfEmpWkPay = 0   
+    tmpWklyComm = 0
+    tmpWklyBonus = 0
+    tmpWklyOvertime = 0
+    tmpWklyTips = 0
+    commBonus = 0
+    totOverTime = 0
+    totTips = 0
+    #For checkboxes
+    SW = ''
+    CB = ''  
+    LS = ''
+    
+    tmpFedClaimed = 0
+    tmpStClaimed = 0
+    totFedClaimed = 0
+    totStClaimed = 0
+    wklyFedDed = 0
+    wklyStateDed = 0
+    wklyFicaDed = 0
+    wklyMedDed = 0
+    wklyUnionDed = 0
+    wklyCreditDed = 0
+    wklySavingsDed = 0
+    wklyRetDed = 0
+    wklyOtherDed = 0
+  
+    wklyTotNItemDed = 0
+    wklyTotalItemDed = 0
+    wklyTotalJobIncome = 0
+    
+    for y in employer:
+      #1. Weekly income
+      #1.a. Salaried
+  	  if y.wage == False:    
+        SW = 's'
+		    tmpAnnualPay = int(y.basePayFrequency) * y.basePay
+        if y.ynCommission:
+          CB = 'c'
+          tmpWklyComm = round(y.yrCommissions/52, 0)
+        else:
+          tmpWklyComm = 0
+        if y.ynBonus:
+          CB = 'b'
+          tmpWklyBonus = round(y.yrBonuses/52, 0)        
+        else: 
+          tmpWklyBonus = 0
+		    tmpWklyPay = round(tmpAnnualPay/52, 0) + tmpWklyComm + tmpWklyBonus
+      #1.b. Hourly work
+	    elif y.wage == True:
+        SW = 'w'
+		    tmpWklyPay = y.hrsPerWk * y.hrlyRate
+        if y.ynOvertime:          
+          tmpWklyOvertime = y.wklyOvertime
+        else:
+          tmpWklyOvertime = 0
+        if y.ynTips:
+          tmpWklyTips = y.wklyTips
+        else:
+          tmpWklyTips = 0
+		    tmpWklyPay = round(tmpWklyPay, 0) + tmpWklyOvertime + tmpWklyTips
+	    #1.c. Self-employed
+      else:            
+        tmpWklyPay = wklyIncome	     
+        
+      #2a. determine which pay bucket to fill  
+	    if y.jobType == 'fullTime':
+		    fullTimeWkPay += tmpWklyPay
+	    elif y.jobType == 'partTime':    
+		    partTimeWkPay += tmpWklyPay
+	    elif y.jobType == 'selfEmp':        
+		    selfEmpWkPay += tmpWklyPay   
+        
+      #2b. Accumudate overtime etc.
+      commBonus += tmpWklyComm
+      commBonus += tmpWklyBonus
+      totOverTime += tmpWklyOvertime
+      totTips += tmpWklyTips      
+      
+      #3. Weekly itemized deductions
+      #3.1 Federal deductions
+      if y.wage == False:        
+		    tmpAnnFedDed = int(y.basePayFrequency) * y.fedTaxDed
+		    wklyFedDed = round(tmpAnnFedDed/52, 0)
+	    elif y.wage == True:
+		    wklyFedDed = y.fedTaxDed
+	    else:    
+		    wklyFedDed = 0 
+      tmpFedClaimed = y.fedNumClaimed 
+      tmpStClaimed = y.stateNumClaimed
+      
+      #3.2 State deductions
+      if y.wage == False:        
+		    tmpAnnStateDed = int(y.basePayFrequency) * y.stateTaxDed
+		    wklyStateDed = round(tmpAnnStateDed/52, 0)
+	    elif y.wage == True:
+		    wklyStateDed = y.stateTaxDed
+	    else:    
+		    wklyStateDed = 0
+      #3.3 FICA and medicare deductions
+      if y.wage == False:        
+		    tmpAnnFicaMedDed = int(y.basePayFrequency) * y.medicareTaxDed
+		    wklyFicaDed = round(tmpAnnFicaMedDed/52, 0)
+	    elif y.wage == True:
+		    wklyFicaDed = y.medicareTaxDed
+	    else:    
+		    wklyFicaDed = 0
+      #3.4 Medical deductions
+      if y.wage == False:        
+		    tmpAnnMedDed = int(y.basePayFrequency) * y.medInsTaxDed
+		    wklyMedDed = round(tmpAnnMedDed/52, 0)
+	    elif y.wage == True:
+		    wklyMedDed = y.medInsTaxDed
+	    else:    
+		    wklyMedDed = 0 
+      #3.5 Union dues
+      if y.wage == False:        
+		    tmpAnnUnionDed = int(y.basePayFrequency) * y.unionDues
+		    wklyUnionDed = round(tmpAnnUnionDed/52, 0)
+	    elif y.wage == True:
+		    wklyUnionDed = y.medInsTaxDed
+	    else:    
+		    wklyUnionDed = 0
+      #3.6 Accumulate itemized deductions from all jobs
+      wklyFedDed += wklyFedDed
+      wklyStateDed += wklyStateDed
+      wklyFicaDed += wklyFicaDed
+      wklyMedDed += wklyMedDed
+      wklyUnionDed += wklyUnionDed
+    
+      #4. Weekly other deductions
+      #4.1 Credit union deductions
+      if y.wage == False:        
+		    tmpAnnCreditDed = int(y.basePayFrequency) * y.creditUnion
+		    wklyCreditDed = round(tmpAnnCreditDed/52, 0)
+	    elif y.wage == True:
+		    wklyCreditDed = y.creditUnion
+	    else:    
+		    wklyCreditDed = 0 
+      if wklyCreditDed > 0:  
+        if y.creditType == 'loan':
+          LS = 'l'
+        elif y.creditType == 'savings':
+          LS = 's'      
+        
+      #4.2 Savings deductions
+      if y.wage == False:        
+		    tmpAnnSavingsDed = int(y.basePayFrequency) * y.savingsDed
+		    wklySavingsDed = round(tmpAnnSavingsDed/52, 0)
+	    elif y.wage == True:
+		    wklySavingsDed = y.savingsDed
+	    else:    
+		    wklySavingsDed = 0
+      #4.3 Retirement saving deductions
+      if y.wage == False:        
+		    tmpAnnRetDed = int(y.basePayFrequency) * y.retDed
+		    wWklyRetDed = round(tmpAnnRetDed/52, 0)
+	    elif y.wage == True:
+		    wklyRetDed = y.retDed
+	    else:    
+		    wklyRetDed = 0        
+      #4.4 Other weekly deductions
+      if y.wage == False:        
+		    tmpAnnOtherDed = int(y.basePayFrequency) * y.otherDed
+		    wklyOtherDed = round(tmpAnnOtherDed/52, 0)
+	    elif y.wage == True:
+		    wklyOtherDed = y.otherDed
+	    else:    
+		    wklyOtherDed = 0      
+      #4.5 Accumulate non-itemized deductions from all jobs
+      wklyCreditDed += wklyCreditDed
+      wklySavingsDed += wklySavingsDed
+      wklyRetDed += wklyRetDed
+      wklyOtherDed += wklyOtherDed
+      totFedClaimed += tmpFedClaimed 
+      totStClaimed += tmpStClaimed
+      
+    #5. Add up all the itemized deductions from all jobs
+    wklyTotalItemDed = wklyFedDed + wklyStateDed + wklyFicaDed + wklyMedDed + wklyUnionDed     
+    #6. Add up all the non-itemized deductions from all jobs
+    wklyTotNItemDed = wklyCreditDed + wklySavingsDed + wklyRetDed + wklyOtherDed
+    #7 Add up all weekly income from all jobs
+	  wklyTotalJobIncome = fullTimeWkPay + partTimeWkPay +  selfEmpWkPay
+---
+if: employed == False
+code: |
+  #Set defaults for ER, pay and deductions if not employed. 
+  #1. ER
+  employer[0].name.text = '' 
+  employer.target_number = 0
+  employer[0].complete = True
+  #2. Pay
+  fullTimeWkPay = 0
+  partTimeWkPay = 0
+  selfEmpWkPay = 0
+  commBonus = 0
+  totOverTime = 0
+  totTips = 0
+  
+  #3. Deductions  
+  wklyFedDed = 0
+  wklyStateDed = 0
+  wklyFicaDed = 0
+  wklyMedDed = 0
+  wklyUnionDed = 0
+  wklyCreditDed = 0
+  wklySavingsDed = 0
+  wklyRetDed = 0
+  wklyOtherDed = 0  
+  wklyTotNItemDed = 0
+  wklyTotalItemDed = 0
+  totFedClaimed = 0
+  totStClaimed = 0
+  
+  #4. Total job income
+  wklyTotalJobIncome = 0
+  
+  #5. Checkboxes
+  SW = ''
+  CB = ''  
+  LS = ''
+  
+  jobIncomeDone = True
+
+    

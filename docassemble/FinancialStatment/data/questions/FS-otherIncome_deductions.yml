@@ -1,0 +1,16 @@
+---
+comment: |
+  Collect deductions for other income. No iterations.
+question: |
+subquestion: |
+  If you have tax withholding for any of your non-job related income, enter here.
+
+fields:  
+  - Federal income tax deductions: OtherIncome_fedTaxDed
+    datatype: currency    
+  - Number of federal exemptions claimed: OtherIncome_fedNumClaimed
+    datatype: integer
+  - State income tax deductions: OtherIncome_stateTaxDed
+    datatype: currency
+  - Number of federal exemptions claimed: OtherIncome_StateNumClaimed
+    datatype: integer

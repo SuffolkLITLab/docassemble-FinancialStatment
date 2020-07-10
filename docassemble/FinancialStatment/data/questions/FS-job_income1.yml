@@ -1,0 +1,129 @@
+---
+comment: |
+  Collect general job info for each job.
+if: employed 
+question: |    
+subquestion: | 
+  % if employer.target_number > 1 and i==0:
+    Enter information ralated to your primary job first, that is, the job that pays you most. The primary employer info will be printed on the main page of the form. The other employers info will be printed on an attachment.
+  % elif employer.target_number > 1 and i>0:
+    Please enter information related to your **${ ordinal(i) } job**.
+  % else:
+    Please enter information related to your job. 
+  % endif
+  
+  Do not enter worker's comp on this screen. 
+fields:  
+  - html: <span class="groupTitle">Employer's Information</span>
+  - Name: employer[i].name.text
+  - Street address: employer[i].street
+    address autocomplete: True
+  - City/Town: employer[i].city
+  - State: employer[i].state
+    code: |
+      states_list()
+  - Zip: employer[i].zip
+  - Phone number: employer[i].TelNo
+  - html: <span class="groupTitle">Your Job Information</span>
+  - Occupation: employer[i].occupation
+  - Job Type: employer[i].jobType
+    datatype: radio
+    default: selfEmp
+    choices: 
+      - Full time: fullTime
+      - Part time: partTime
+      - Self employed: selfEmp
+section: From_Jobs
+progress: 15
+---
+comment: |
+  Collect income info for each job, except self employed job.
+if: |
+  employer[i].jobType == "fullTime" or employer[i].jobType == "partTime"
+question: |
+subquestion: |
+  Use your pay stub for this job to answer the following questions.
+fields:  
+  - html: <span class="groupTitle">Your Regular Pay</span>
+  - Are you paid by hour?: employer[i].wage
+    datatype: yesnoradio
+  - Number of working hours/week: employer[i].hrsPerWk
+    datatype: integer
+    help: |
+      How many regular hours do you normally work in a week on average? Do not include your overtime. If you work different hours every week, add up all the hours you worked in the last 4 weeks, divide that number by 4 and enter the result here.
+    show if:
+      variable: employer[i].wage
+      is: True
+  - Your hourly pay rate: employer[i].hrlyRate
+    datatype: currency
+    show if:
+      variable: employer[i].wage
+      is: True  
+  - html: <span class="groupTitle">Your non-Regular Pay</span>
+    hide if:
+      variable: employer[i].wage
+      is: None
+  - Do you receive tips?: employer[i].ynTips
+    datatype: yesnoradio
+    show if:
+      variable: employer[i].wage
+      is: True      
+  - Average tips a week: employer[i].wklyTips
+    datatype: currency
+    help: |
+      Add up all the tips you received in the last 4 weeks, divide that number by 4 and enter the result here.
+    show if:
+      variable: employer[i].ynTips
+      is: True
+  - Do you get paid overtime?: employer[i].ynOvertime
+    datatype: yesnoradio
+    show if:
+      variable: employer[i].wage
+      is: True
+  - Average overtime pay a week?: employer[i].wklyOvertime
+    datatype: currency
+    help: |
+      If your overtime changes, add up all the overtime pay you received in the last 4 weeks, divide that number by 4 and enter the result here.
+    show if:
+      variable: employer[i].ynOvertime
+      is: True
+  - How often do you get paid?: employer[i].basePayFrequency
+    datatype: radio
+    choices:
+      - Annually: 1
+      - Monthly: 12
+      - Weekly: 52
+    help: |
+      If the frequency is not listed here, enter it as annual.
+    show if:
+      variable: employer[i].wage
+      is: False
+  - Base pay: employer[i].basePay
+    datatype: currency
+    help: |
+      This amount is before taxes or any deductions come out of your pay, and must match the frequency you entered above. Do not include commissions and bonuses, they need to be entered separately.       
+    show if:
+      variable: employer[i].wage
+      is: False 
+  - Do you receive commissions?: employer[i].ynCommission
+    datatype: yesnoradio
+    show if:
+      variable: employer[i].wage
+      is: False
+  - How much commissions did you receive last year?: employer[i].yrCommissions
+    datatype: currency
+    show if:
+      variable: employer[i].ynCommission
+      is: True
+  - Do you receive bonuses?: employer[i].ynBonus
+    datatype: yesnoradio
+    show if:
+      variable: employer[i].wage
+      is: False
+  - How much bonuses did you receive last year?: employer[i].yrBonuses
+    datatype: currency
+    show if:
+      variable: employer[i].ynBonus
+      is: True
+section: From_Jobs
+progress: 40

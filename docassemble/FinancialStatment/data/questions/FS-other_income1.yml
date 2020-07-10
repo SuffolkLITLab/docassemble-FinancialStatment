@@ -1,0 +1,291 @@
+---
+if: jobIncomeDone
+comment: |
+  Collect all non-job income info. No iterations.
+question: |
+subquestion: |
+   Do you have any income paid by someone who is not your employer?   
+fields:
+  - Have income not-related to jobs: nonJobIncome
+    datatype: yesnoradio
+section: Other_Sources
+progress: 42
+---
+if: nonJobIncome 
+question: |
+subquestion: |
+   Enter all the income from non-job related sources.   
+fields:
+  - html: <span class="groupTitle">Income Received on a Monthly Basis</span>
+  - Annuities: annuityAmt
+    datatype: currency
+    default: 0
+  - Pensions: pensionAmt
+    datatype: currency
+    default: 0
+  - Retirement funds: retFundAmt
+    datatype: currency
+    default: 0
+  - Social security: SSAmt
+    datatype: currency
+    default: 0
+  - Disability benefit: disAmt
+    datatype: currency
+    default: 0
+  - Welfare benefit: welfareAmt
+    datatype: currency
+    default: 0
+  - TAFDC benefit: tafdcAmt
+    datatype: currency
+    default: 0
+  - Food stamp (SNAP) benefit: snapAmt
+    datatype: currency
+    default: 0
+  - Other public assistance benefit: otherPubBenAmt
+    datatype: currency
+    default: 0
+  - Other public assistance benefit type: otherPubBenType
+    hint: Name of the benefit.
+    js show if:
+      val("otherPubBenAmt") > 0
+  - Alimony: alimonyAmt
+    datatype: currency
+    default: 0
+  - html: <span class="groupTitle">Income Received on a Weekly Basis</span>
+  - Unemployment benefit amount: unempAmt
+    datatype: currency
+    default: 0
+	  help: |
+      Enter avearage weekly amount. For example, if you receive the benefit bi-weekly, divide it by 2 and enter the amount here.
+  - Worker's comp benefit amount: workCompAmt
+    datatype: currency
+    default: 0
+	  help: |
+      Enter avearage weekly amount. For example, if you receive the benefit bi-weekly, divide it by 2 and enter the amount here.
+  - Child support amount: ChildSupportAmt
+    datatype: currency
+    default: 0
+	  help: |
+      Enter avearage weekly amount. For example, if you receive the payment monthly, divide it by 4 and enter the amount here.
+  - Total contributions from house members: hContribAmt
+    datatype: currency
+    default: 0
+    help: |
+      Enter contributions from all the house members. If the contributions vary, enter the average weekly contribution from all members. 
+  - Other income amount 1: otherAmt1
+    datatype: currency
+    default: 0
+  - Other income type: otherAmtType1
+    hint: Nature of the income.
+    js show if:
+      val("otherAmt1") > 0  
+  - Other income amount 2: otherAmt2
+    datatype: currency
+    default: 0
+  - Other income type: otherAmtType2
+    hint: Nature of the income.
+    js show if:
+      val("otherAmt2") > 0  
+  - html: <span class="groupTitle">Income with Various Pay Frenquency</span>
+  - Do you receive dividends?: ynDividend
+    datatype: yesnoradio
+  - How often are dividends paid?: divFrequency
+    datatype: radio
+    choices:
+      - Annually: 1
+      - Semi-annually: 2
+      - Quarterly: 4
+      - Monthly: 12
+    help: |
+      If the frequency is not listed here, enter it as annual.
+	  show if:
+      variable: ynDividend
+      is: True
+  - Dividend amount: divAmt
+    datatype: currency
+    help: |
+      This amount must match the frequency you entered above.
+	  show if:
+      variable: ynDividend
+      is: True
+  - Do you receive interests?: ynInt
+    datatype: yesnoradio
+  - How often are interests paid?: intFrequency
+    datatype: radio
+    choices:
+      - Annually: 1
+      - Semi-annually: 2
+      - Quarterly: 4
+      - Monthly: 12
+    help: |
+      If the frequency is not listed here, enter it as annual.
+	  show if:
+      variable: ynInt
+      is: True
+  - Interest amount: intAmt
+    datatype: currency
+    help: |
+      This amount must match the frequency you entered above.
+	  show if:
+      variable: ynInt
+      is: True  
+  - Do you receive from any trust?: ynTrust
+    datatype: yesnoradio
+  - How often are you get paid?: trustFrequency
+    datatype: radio
+    choices:
+      - Annually: 1
+      - Semi-annually: 2
+      - Quarterly: 4
+      - Monthly: 12
+    help: |
+      If the frequency is not listed here, enter it as annual.
+	  show if:
+      variable: ynTrust
+      is: True
+  - Trust income amount: trustAmt
+    datatype: currency
+    help: |
+      This amount must match the frequency you entered above.
+	  show if:
+      variable: ynTrust
+      is: True  
+  - Are you receiving income from royalties and rights?: ynRoyalties
+    datatype: yesnoradio
+  - How often do you receive the payments?: royaltiesFrequency
+    datatype: radio
+    choices:
+      - Weekly: 52
+      - Monthly: 12
+    help: |
+      If the frequency is not listed here, enter it as weekly.
+	  show if:
+      variable: ynRoyalties
+      is: True
+  - Royalties and rights income amount: royaltiesAmt
+    datatype: currency
+	  help: |
+      This amount must match the frequency you entered above.
+	  show if:
+      variable: ynRoyalties
+      is: True
+	- html: <span class="groupTitle">Rent Income
+  - Are you receiving rent from your property?: ynRentIncome
+    datatype: yesnoradio
+section: Other_Sources
+progress: 50
+---
+comment: |
+  Convert non-job income into weekly amounts, and add them up. Then Calculate total gross and net week income.
+if: nonJobIncome
+code: |      
+  #1. Convert monthly amounts to weekly
+  wklyAnnuity = round(annuityAmt/4, 0)
+  wklyPension = round(pensionAmt/4, 0)
+  wklyRetFund = round(retFundAmt/4, 0)
+  wklySS = round(SSAmt/4, 0)
+  wklyDis = round(disAmt/4, 0)
+  wklyWelfare = round(welfareAmt/4, 0)
+  wklyTAFDC = round(tafdcAmt/4, 0)
+  wklySNAP = round(snapAmt/4, 0)
+  wklyOtherPub = round(otherPubBenAmt/4, 0)
+  wklyAlimony = round(alimonyAmt/4, 0)
+  wklyTotalMon = wklyAnnuity + wklyPension + wklyRetFund + wklySS + wklyDis  + wklyWelfare + wklyTAFDC + wklySNAP + wklyOtherPub + wklyAlimony
+  #2. Convert amounts with various frequencies to weekly
+  if ynDividend:
+    tmpAnnualAmt = int(divFrequency) * divAmt
+    wklyDiv = round(tmpAnnualAmt/52, 0)
+  else:
+    wklyDiv = 0
+  if ynInt:
+    tmpAnnualAmt = int(intFrequency) * intAmt
+    wklyInt = round(tmpAnnualAmt/52, 0)
+  else:
+    wklyInt = 0
+  if ynTrust:
+    tmpAnnualAmt = int(trustFrequency) * trustAmt
+    wklyTrust = round(tmpAnnualAmt/52, 0)
+  else:
+    wklyTrust = 0  
+  if ynRoyalties:
+    tmpAnnualAmt = int(royaltiesFrequency) * royaltiesAmt
+    wklyRoyalty = round(tmpAnnualAmt/52, 0)
+  else:
+    wklyRoyalty = 0
+  if ynRentIncome:   
+    totRentOperExp = rentAdvertise + rentSupplies + rentRepairs + rentMaint + rentUtilities
+    totRentPropertyExp = rentInsurance + rentMortgageInt + rentLoanInt1 + rentLoanInt2 + rentTaxes
+    totRentAutoExp = rentGas + rentAutoIns + rentAutoMtnance + rantAutoReg + rentTravel + rentMeals
+    totWagesAndFees = rentCommission + rentWages + rentLegalFees + rentOtherExp1 + rentOtherExp2
+    totalRentExp = totRentOperExp + totRentPropertyExp + totRentAutoExp + totWagesAndFees
+    wklyRentIncome = round((annRentRecived - totalRentExp)/52, 0)
+  else:
+    wklyRentIncome = 0
+  wklyTotalVary = wklyDiv + wklyInt + wklyTrust + wklyRentIncome + wklyRoyalty
+
+  #3. Add up all weekly income from user input
+  wklyTotalWkly = unempAmt + workCompAmt + ChildSupportAmt + hContribAmt
+  #4. Add up all converted weekly amounts from nonJob income 
+  wklyTotalIncomeNonJob = wklyTotalMon + wklyTotalVary + wklyTotalWkly  
+
+  #5. Add up variables for some of the form items
+  divInt = wklyDiv + wklyInt 
+  trustAnn = wklyTrust + wklyAnnuity
+  penRet = wklyPension + wklyRetFund
+  disUnempWkcomp = wklyDis + unempAmt + workCompAmt
+  pubBens = wklyWelfare + wklyTAFDC + wklySNAP + wklyOtherPub
+  chldAli = ChildSupportAmt + wklyAlimony
+  
+  #6. Add other income deductions to job deductions
+  wklyFedDed += OtherIncome_fedTaxDed
+  wklyStateDed += OtherIncome_stateTaxDed
+	totFedClaimed += OtherIncome_fedNumClaimed
+	totStClaimed += OtherIncome_StateNumClaimed
+  wklyTotalItemDed += OtherIncome_fedTaxDed + OtherIncome_stateTaxDed
+  
+  #7.1 Calculate gross income from jobs and non-job sources
+  wklyGrossIncome = round(wklyTotalJobIncome + wklyTotalIncomeNonJob, 0)  
+  #7.2 Calculate adjusted weekly income
+  wklyAdjIncome = round(wklyGrossIncome - wklyTotalItemDed, 0)
+  #7.3 Calculate weekly net income
+  wklyNetIncome = round(wklyAdjIncome - wklyTotNItemDed, 0)  
+  
+  OtherIncomeDone = True
+---
+comment: |
+  Set defaults for the non-job related income section, then set defaults for the 3 total numbers.
+if: nonJobIncome == False
+code: |  
+  ynRentIncome = False
+  ynDividend = False
+  ynInt = False
+  ynTrust = False
+    
+  divInt = 0 
+  trustAnn = 0
+  annuityAmt = 0
+  penRet = 0
+  pensionAmt = 0
+  retFundAmt = 0
+  wklySS = 0  
+  disUnempWkcomp = 0
+  disAmt = 0
+  unempAmt = 0
+  workCompAmt = 0
+  pubBens = 0
+  chldAli = 0
+  ChildSupportAmt = 0
+  wklyAlimony = 0  
+  wklyRentIncome = 0  
+  wklyRoyalty = 0
+  hContribAmt = 0
+  otherAmt1 = 0
+  otherAmt2 = 0  
+  wklyTotalIncomeNonJob = 0    
+  
+  wklyGrossIncome = wklyTotalJobIncome  
+  wklyAdjIncome = round(wklyGrossIncome - wklyTotalItemDed, 0)
+  wklyNetIncome = round(wklyAdjIncome - wklyTotNItemDed, 0)  
+  
+  OtherIncomeDone = True
+    

@@ -1,0 +1,250 @@
+---
+if: retPlansDone
+comment: |
+  Page 3 - Assets (d), collect deferred annuity info.  
+question: |
+subquestion: |
+	Enter information related to your deferred annuities, such as a 403(b) plan offered from a job, or you bought one from a bank or similar financial institution.
+fields:
+  - html: <span class="groupTitle">Deferred Annuities</span>
+  - Do you have any deferred annuity from a job or a bank etc.?: yndeferredPlan
+    datatype: yesnoradio
+  - How many such accounts do you have?: deferredPlan.target_number
+    datatype: integer
+    show if:
+      variable: yndeferredPlan
+      is: True
+section: Assets
+progress: 72
+---
+if: yndeferredPlan
+question: |    
+subquestion: |
+  % if deferredPlan.target_number > 1:
+    Enter information related to your ${ ordinal(i) } deferred annuity.
+  % else:
+    Enter information related to your deferred annuity. 
+  % endif
+fields:    
+  - Plan name: deferredPlan[i].name.text
+  - Present value amount: deferredPlan[i].amt
+    datatype: currency
+section: Assets
+progress: 72
+---
+if: yndeferredPlan
+code: |      
+  deferredPlan[i].amt
+  deferredPlan[i].complete = True
+---
+code: |
+  count = 0
+  for y in deferredPlan:
+    count += 1
+  if count == deferredPlan.target_number:
+    deferDone = True  
+  #Accumulate deferred plans value after the last plan's info collected.
+  if deferDone:  
+    TotaldefVal = 0
+	  for y in deferredPlan:           		
+		  TotaldefVal += y.amt
+---
+if: yndeferredPlan == False
+code: | 
+  deferredPlan[0].name.text = ''
+  deferredPlan.target_number = 0
+  deferredPlan[0].complete = True
+  TotaldefVal = 0
+  deferDone = True
+---
+if: deferDone
+comment: |
+  Page 3 - Assets (e), collect life insurance info.  
+question: |
+subquestion: |
+	Enter life insurance info.
+fields:
+  - html: <span class="groupTitle">Life Insurance</span>
+  - Do you own any life insurance policy?: ynlifeInsurance
+    datatype: yesnoradio
+  - How many life insurance policies do you own?: lifeInsurance.target_number
+    datatype: integer
+    show if:
+      variable: ynlifeInsurance
+      is: True
+section: Assets
+progress: 74
+---
+if: ynlifeInsurance
+question: |    
+subquestion: |
+  % if lifeInsurance.target_number > 1:
+    Enter information related to your ${ ordinal(i) } life insurance policy.
+  % else:
+    Enter information related to your life insurance policy. 
+  % endif
+fields:    
+  - Insurance company name: lifeInsurance[i].name.text
+  - How much do you insured?: lifeInsurance[i].amt
+    datatype: currency
+section: Assets
+progress: 74
+---
+if: ynlifeInsurance
+code: |      
+  lifeInsurance[i].amt
+  lifeInsurance[i].complete = True
+---
+code: |
+  count = 0
+  for y in lifeInsurance:
+    count += 1
+  if count == lifeInsurance.target_number:
+    insureDone = True  
+  #Accumulate life insurance values after the last policy's info collected.
+  if insureDone:    
+    totLifeInsVal = 0
+	  for y in lifeInsurance:           		
+		  totLifeInsVal += y.amt
+---
+if: ynlifeInsurance == False
+code: | 
+  lifeInsurance[0].name.text = ''  
+  lifeInsurance.target_number = 0
+  lifeInsurance[0].complete = True
+  totLifeInsVal = 0
+  insureDone = True
+---
+if: insureDone
+comment: |
+  Page 3 - Assets (f), collect savings info.  
+question: |
+subquestion: |
+	Enter information related to your personal savings, whether in your name, jointly or in the name of another for your benefit or your children's benefit. This include all the savings and checking accounts, money market accounts, certificate of deposits.
+fields:
+  - html: <span class="groupTitle">Personal Savings</span>
+  - Do you have any savings in a bank or similar financial institution?: ynSavingsPlan
+    datatype: yesnoradio
+  - How many such accounts do you have?: savingsPlan.target_number
+    datatype: integer
+    show if:
+      variable: ynSavingsPlan
+      is: True
+section: Assets
+progress: 76
+---
+if: ynSavingsPlan
+question: |    
+subquestion: |
+  % if savingsPlan.target_number > 1:
+    Enter information related to your ${ ordinal(i) } savings plan.
+  % else:
+    Enter information related to your savings plan. 
+  % endif
+fields:    
+  - Financial institution name/account number: savingsPlan[i].name.text
+	  help: |
+		  For example, Bank of America/123456789.   
+  - Savings amount in this account: savingsPlan[i].amt
+    datatype: currency
+section: Assets
+progress: 76
+---
+if: ynSavingsPlan
+code: |      
+  savingsPlan[i].amt
+  savingsPlan[i].complete = True
+
+---
+code: |
+  count = 0
+  for y in savingsPlan:
+    count += 1
+  if count == savingsPlan.target_number:
+    savingsDone = True  
+  #Accumulate savings plans value after the last plan's info collected.
+  if savingsDone:   
+    TotalSavingsVal = 0
+	  for y in savingsPlan:           		
+		  TotalSavingsVal += y.amt
+---
+if: ynSavingsPlan == False
+code: | 
+  savingsPlan[0].name.text = ''
+  savingsPlan.target_number = 0  
+  savingsPlan[0].complete = True
+  TotalSavingsVal = 0
+  savingsDone = True
+---
+if: savingsDone
+comment: |
+  Page 3 - Assets (g), collect other assets info.  
+question: |
+subquestion: |
+	Enter other assets information, for example, stocks, bonds and collections.
+fields:
+  - html: <span class="groupTitle">Other Assets</span>
+  - Do you own other assets?: ynOtherAssets
+    datatype: yesnoradio
+  - How many other assets do you own?: otherAssets.target_number
+    datatype: integer
+    show if:
+      variable: ynOtherAssets
+      is: True
+section: Assets
+progress: 78
+---
+if: ynOtherAssets
+question: |    
+subquestion: |
+  % if otherAssets.target_number > 1:
+    Enter information related to your ${ ordinal(i) } other assets.
+  % else:
+    Enter information related to your other asset. 
+  % endif
+fields:    
+  - Asset name: otherAssets[i].name.text
+	  hint: bond name, stock name, collection name
+  - Asset value: otherAssets[i].amt
+    datatype: currency
+section: Assets
+progress: 80
+---
+if: ynOtherAssets
+code: |      
+  otherAssets[i].amt
+  otherAssets[i].complete = True
+---
+code: |
+  count = 0
+  for y in otherAssets:
+    count += 1
+  if count == otherAssets.target_number:
+    otherDone = True  
+  #Accumulate other asset values after the last one is collected.
+  if otherDone:     
+    TotalOtherAssetsVal = 0
+	  for y in otherAssets:           		
+		  TotalOtherAssetsVal += y.amt
+---
+if: ynOtherAssets == False
+code: | 
+  otherAssets[0].name.text = ''  
+  otherAssets.target_number = 0
+  otherAssets[0].complete = True
+  TotalOtherAssetsVal = 0
+  otherDone = True
+---
+code: |
+  #Add up all the assets
+  TotalAssets = TotalHouseVal + TotalAutoEqt + totRetPlanVal + TotaldefVal + totLifeInsVal + TotalSavingsVal + TotalOtherAssetsVal 
+      
+  assetsDone = True  
+  
+  #Set a variable for the addendum file 
+  if houses.target_number > 1 or auto.target_number > 1 or retPlans.target_number > 1 or savingsPlan.target_number > 1 or lifeInsurance.target_number > 1 or deferredPlan.target_number > 1 or otherAssets.target_number > 1:
+    addAssets = True
+  else:    
+    addAssets = False
+
+

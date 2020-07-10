@@ -1,0 +1,185 @@
+---
+if: OtherIncomeDone
+comment: This section has no iteration.
+question: |  
+subquestion: |
+  Enter your living expense info.
+fields:
+  - html: |
+      <span class="groupTitle">Monthly Living Expenses</span><br/>   
+      
+      If you pay any of them weekly, multiply the expense by 4 and enter the result. If your expenses change from month to month, enter the average amount.
+  - Rent or mortgage: mthlyRent
+    datatype: currency
+    default: 0
+    help: |
+      If you are paying mortgate, enter the monthly mortgage payment including principal, interest, and taxes.
+  - Homeowner/tenent insurance: mthlyHomeInsurance
+    datatype: currency
+    default: 0
+  - Heat: mthlyHeat
+    datatype: currency
+    default: 0
+  - Electricity and/or Gas: mthlyElecGas
+    datatype: currency
+    default: 0
+  - Telephone fee: mthlyTelephon
+    datatype: currency
+    default: 0
+  - Water/sewer fee: mthlyWater
+    datatype: currency
+    default: 0
+  - Life insurance: mthlyLifeIns
+    datatype: currency
+    default: 0 
+  - Mortoal vehicle loan payment: mthlyCarLoan
+    datatype: currency
+    default: 0
+  - Do you have health insurance coverage?: ynHIns
+    datatype: yesnoradio
+  - Name of health insurance provider: health_provider
+    show if:
+      variable: ynHIns
+      is: True
+  - Medical insurance: mthlyMedIns
+    datatype: currency
+    show if:
+      variable: ynHIns
+      is: True
+  - html: |
+      <span class="groupTitle">Weekly Living Expenses</span><br/>   
+      
+      If you pay any of them monthly, divide the expense by 4 and enter the result. If your expenses change from week to week, enter the average amount.
+  - Food: Food
+    datatype: currency
+    default: 0
+  - Hourse supplies: HouseSupplies
+    datatype: currency
+    default: 0
+  - Laundry and cleaning: laundry
+    datatype: currency
+    default: 0
+  - Child care: childCare
+    datatype: currency
+    default: 0
+  - html: |
+      <span class="groupTitle">Annual Expenses</span><br/>   
+      These expenses may occur once in a while. Enter the amount you pay for the whole year for each of them. Enter zero if not applicable.  
+  - House maintenance and repair: yrlyHouseRepair
+    datatype: currency
+    default: 0
+  - Clothing: yrlyClothing
+    datatype: currency
+    default: 0
+  - Uninsured medicals: yrlyUninsuredMed
+    datatype: currency
+    default: 0
+    help: |
+      If you paid any medical expenses out of pocket and not reimbursed by your medical insurance, enter the amount here.
+  - Incidentals and toiletries: yrlyIncidental
+    datatype: currency
+    default: 0
+  - Mortal vehicle expenses: yrlyCarExpense
+    datatype: currency
+    default: 0
+    help: |
+      For example, car maitenance expense or car repair, toll, etc.
+  - Other expenses: yrlyOtherExpense
+    datatype: currency
+    default: 0
+  - Other expenses explanation: yrOtherExpType
+    js show if:
+      val("yrlyOtherExpense") > 0 
+section: Expenses
+progress: 51
+---
+comment: |
+  if wklyTotalExpense=0, you may see some error, but since everyone must have some expenses, that is not a real scenario.
+if: wklyTotalExpense > 0
+question: |  
+subquestion: |
+  Enter your lawyer expense information.
+fields:
+  - Do you have a lowyer for your court case?: ynLawyer
+    datatype: yesnoradio
+  - Your lawyer's first name: attorney.name.first 
+    show if:
+      variable: ynLawyer
+      is: True
+  - Your lawyer's last name: attorney.name.last
+    show if:
+      variable: ynLawyer
+      is: True
+  - E-mail: attorney.email
+    datatype: email 
+    show if:
+      variable: ynLawyer
+      is: True
+  - Retainer amouont paid to your lawyer: retainerAmt
+    datatype: currency
+    show if:
+      variable: ynLawyer
+      is: True
+  - How much have you been billed: legalFeeBilled
+    datatype: currency
+    show if:
+      variable: ynLawyer
+      is: True
+  - html: |
+      How much do you anticipate to spend for this case?
+  - At least this much: estlegalFeeMin
+    datatype: currency
+    show if:
+      variable: ynLawyer
+      is: True
+  - No more than this amount: estlegalFeeMax
+    datatype: currency
+    show if:
+      variable: ynLawyer
+      is: True
+section: Expenses
+progress: 65
+---
+if: ynLawyer == False
+code: |
+  retainerAmt = 0
+  legalFeeBilled = 0
+  estlegalFeeMin = 0
+  estlegalFeeMax = 0
+---
+comment: |
+  Convert expenses to weekly amounts and add them up.
+code: |  
+  if ynHIns == False:
+    mthlyMedIns = 0
+    health_provider = ''
+    
+  #1. Convert monthly expenses to weekly
+  wklyRentExp = round(mthlyRent/4, 0)
+  wklyHomeIns = round(mthlyHomeInsurance/4, 0)
+  wklyHeat=round(mthlyHeat/4, 0) 
+  wklyElecGas=round(mthlyElecGas/4, 0) 
+  wklyTelephone = round(mthlyTelephon/4, 0)
+  wklyWater = round(mthlyWater/4, 0)
+  wklyLifeIns = round(mthlyLifeIns/4, 0)
+  wklyMedIns = round(mthlyMedIns/4, 0)
+  wklyCarLoan = round(mthlyCarLoan/4, 0)
+  wklyTotalMonExp = wklyRentExp + wklyHomeIns + wklyHeat + wklyElecGas + wklyTelephone + wklyWater + wklyLifeIns + wklyMedIns + wklyCarLoan
+  #2. Convert annual expenses to weekly
+  wklyHRepair = round(yrlyHouseRepair/52.14, 0)
+  wklyClothing = round(yrlyClothing/52.14, 0)
+  wklyUninsMed = round(yrlyUninsuredMed/52.14, 0)
+  wklyIncidental = round(yrlyIncidental/52.14, 0)
+  wklyCarExpense = round(yrlyCarExpense/52.14, 0)
+  wklyOtherExpense = round(yrlyOtherExpense/52.14, 0)
+  wklyTotalAnnExp = wklyHRepair + wklyClothing + wklyUninsMed + wklyIncidental + wklyCarExpense + wklyOtherExpense
+  #3. Add up all weekly expenses from user's answers
+  wklyTotalWkUser = Food + HouseSupplies + laundry + childCare
+  #4. Calculate total weekly expense from all converted amounts
+  wklyTotalExpense = wklyTotalMonExp + wklyTotalAnnExp + wklyTotalWkUser
+
+---
+code: |
+  if ynLawyer != None:
+    expensesDone = True
+    

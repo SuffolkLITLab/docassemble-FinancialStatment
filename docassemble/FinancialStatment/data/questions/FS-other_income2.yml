@@ -1,0 +1,97 @@
+---
+comment:  Collect income info for the rent income questions.
+if: ynRentIncome
+question: |
+subquestion: |
+  In order to fill in Schedule B for rental income, please answer the following questions. We will calculate your weekly income based on your input.
+  All the amounts are **ANNUAL** amounts.
+fields:  
+  - html: <span class="groupTitle">Annual Rent Received</span>
+  - Annual rent received: annRentRecived
+    datatype: currency    
+  - html: <span class="groupTitle">Operation Expenses</span>
+  - Advertising: rentAdvertise
+    datatype: currency
+    default: 0
+  - Supplies: rentSupplies
+    datatype: currency
+    default: 0  
+  - Repairs: rentRepairs
+    datatype: currency
+    default: 0
+  - Cleaning and maintenance: rentMaint
+    datatype: currency
+    default: 0
+  - Utilities: rentUtilities
+    datatype: currency
+    default: 0
+  - html: <span class="groupTitle">Property Expenses</span>
+  - Rent Property Insurance: rentInsurance
+    datatype: currency
+    default: 0
+    help: Insurance related to rental property.
+  - Interest on mortgage to banks: rentMortgageInt
+    datatype: currency
+    default: 0
+  - Other interest on loan 1: rentLoanInt1
+    datatype: currency
+    default: 0
+  - Explain other interest on loan 1: rentLoanIntType1    
+    hint: Specify the loan.
+    js show if:
+      val("rentLoanInt1") > 0
+  - Other interest on loan 2: rentLoanInt2
+    datatype: currency
+    default: 0
+  - Explain other interest on loan 2: rentLoanIntType2
+    hint: Specify the loan.
+    js show if:
+      val("rentLoanInt2") > 0
+  - Property related taxes: rentTaxes
+    datatype: currency
+    default: 0
+  - html: <span class="groupTitle">Motor Vehicle And Travel</span>
+  - Gas: rentGas
+    datatype: currency
+    default: 0
+  - Insurance: rentAutoIns
+    datatype: currency
+    default: 0
+  - Maintenance: rentAutoMtnance
+    datatype: currency
+    default: 0
+  - Registration: rantAutoReg
+    datatype: currency
+    default: 0
+  - Travel: rentTravel
+    datatype: currency
+    default: 0
+  - Meals and entertainment: rentMeals
+    datatype: currency
+    default: 0 
+  - html: <span class="groupTitle">Wages and Fees</span>
+  - Commissions: rentCommission
+    datatype: currency
+    default: 0
+  - Employee wages: rentWages
+    datatype: currency
+    default: 0
+  - Legal and professional services: rentLegalFees
+    datatype: currency
+    default: 0 
+  - Other business expense 1: rentOtherExp1
+    datatype: currency
+    default: 0   
+  - Explain other expense 1: rentOtherExpType1
+    hint: Specify the expense.    
+    js show if:
+      val("rentOtherExp1") > 0
+  - Other business expense 2: rentOtherExp2
+    datatype: currency
+    default: 0   
+  - Explain other expense 2: rentOtherExpType2  
+    hint: Specify the expense.   
+    js show if:
+      val("rentOtherExp2") > 0
+section: Other_Sources
+progress: 50    

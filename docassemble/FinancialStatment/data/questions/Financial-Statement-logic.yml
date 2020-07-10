@@ -1,0 +1,188 @@
+---
+metadata:
+  title: |
+    Financial Statement
+  description: |
+    Finalcial Statement for MA Probate and Family Trial Court
+  continue button label: Next
+---
+modules:
+  - docassemble.base.core
+  - docassemble.VirtualCourtToolbox.addenda
+---
+include:
+  - FS-personal.yml  
+  - FS-job_income1.yml
+  - FS-job_income2.yml
+  - FS-job_deductions.yml
+  - FS-other_income1.yml  
+  - FS-other_income2.yml  
+  - FS-otherIncome_deductions.yml
+  - FS-expenses.yml
+  - FS-assets1.yml
+  - FS-assets2.yml
+  - FS-debts.yml
+  - FS-signature.yml
+---
+objects:    
+  - client: Individual
+  - attorney: Individual
+---
+initial: true
+code: |
+  multi_user = True
+  role = 'client'
+  if user_logged_in():
+    if not defined('client.email'):
+      client.email = user_info().email     
+    if user_info().email == client.email:      
+      role = 'client'
+    elif user_info().email == attorney.email:	    
+      role = 'attorney'
+    else:
+      user_kicked_out
+  else:  
+    user_must_log_in
+  process_action()  
+  
+  if role == 'client':
+    if returning_user(minutes=0.5):
+      welcome_back
+---
+mandatory: true
+code: |    
+  if role == 'client':
+    sees_nav_bar  #to call the intro screen.
+    client.endpoint
+  elif role == 'attorney':
+    if not defined('attorney.signature'):   
+      if goSign:
+        attorney.signature
+      else:
+        pre_attorney_signature      
+    else:
+      final_screen
+---
+sections:
+  - Introduction
+  - Personal_Info
+  - Income:
+    - From_Jobs
+    - Other_Sources
+  - Expenses
+  - Assets
+  - Debts
+  - Signature  
+---
+features:
+  navigation: True
+  progress bar: True
+  question back button: True
+  navigation back button: False
+  css: financialStmt-styles.css
+---
+mandatory: True
+code: |
+  menu_items = [ action_menu_item('Roadmap', 'road_map') ]
+---
+event: user_kicked_out
+question: |
+  You are not authorized.
+---
+event: user_must_log_in
+question: |
+subquestion: |
+  I am sorry, but you need to log in if you want to use this interview.
+buttons:
+  - Log in: signin
+  - Exit: exit
+---
+comment: this is the first screen the user sees.
+question: |
+subquestion: |
+  This guided online form is to help you fill in the short form of the **Financial Statement** for the **Massachusetts Probate and Family Court**.<br/>    
+  **<span class="groupTitle">Important</span>:** Please go thru each screen carefully and slowly. Although you can go back to a prior screen to change your answers, all the earlier input on the screens after that screen will be lost.<br/><br/>
+  Please gather the following information before you start, you will need them to answer questions:
+  <ul>
+    <li>Your social security number (you must have a valid one)</li>
+    <li>Your pay stubs for all your jobs if you are working</li>
+    <li>All your living expense weekly/monthly bills</li>
+    <li>All the paperwork for your assets - houses, cars, life insurances, stocks, etc. </li>
+    <li>All your debt bills (excluding living expenses) whether you are paying or not paying</li>
+  <ul>
+  
+field: sees_nav_bar
+section: Introduction
+progress: 2
+---
+event: final_screen
+question: |
+subquestion: |
+  % if role == 'client':
+    % if ynLawyer:
+   You have successfully completed the interview. Your attorney has signed the form, now you can download it from this screen. 
+    % else: 
+   You have successfully completed the interview. Now you can download it from this screen. 
+    % endif
+  % elif role == 'attorney':
+   The form is now complete with your signature. You can  download it from this screen. 
+  % endif
+
+buttons:
+  - End the Interview: exit
+  - Restart: restart
+
+attachment:
+  name: Signed Financial Statement Shortform for ${ client.name }
+  filename: financial statement  
+  docx template file: shortform.docx
+---
+attachment: 
+  - name: signed form preview
+    filename: shortform
+    variable name: shortform
+    docx template file: shortform.docx
+---
+comment: convert docx to pdf for preview
+code: |      
+  outputFile = pdf_concatenate(shortform, filename="preview.pdf")
+---
+event: welcome_back
+question: |
+  Welcome back!
+subquestion: |
+  You are currently in the
+  **${ nav.get_section(display=True) }**
+  section.
+
+  ${ nav }
+
+  Press "Continue" to pick up
+  where you left off.
+buttons:
+  Continue: continue
+---
+event: road_map
+question: |
+  Roadmap
+subquestion: |
+  You are currently in the
+  **${ nav.get_section(display=True) }**
+  section.
+
+  ${ nav }
+
+  Press "Continue" to resume the
+  interview.
+buttons:
+  Continue: continue
+---
+interview help:
+  label: More info
+  heading: More information about this web site
+  content: |
+    TBD.
+---
+auto terms:
+  interview: |
+    TBD - An online guided process to collect data in order to generate a form for you. 

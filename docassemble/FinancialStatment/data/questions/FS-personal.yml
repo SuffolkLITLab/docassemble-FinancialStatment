@@ -1,0 +1,53 @@
+---
+objects: 
+  - employer: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True) 
+---
+question: |
+subquestion: |
+  Please answer the following questions.  
+fields:
+  - html: <span class="groupTitle">Your Personal Information</span>
+  - Your first name: client.name.first  
+  - Your last name: client.name.last  
+  - Your Social Security Number: client.ssn  
+    help: |
+      You must have a valid Social Security Number for this statement.
+  - Your date of birth: client.birthdate
+    datatype: date	  
+  - Your street address: client.address.address
+    address autocomplete: True
+  - City/town: client.address.city
+  - State: client.address.state
+    code: |
+      states_list()	  
+  - Zip: client.address.zip
+  - Phone number: client.tele
+  - html: <span class="groupTitle">Court Case Information</span>
+  - Division name: divisionName
+  - Docket number: docketNum
+    datatype: integer
+  - Plentiff name: plentName
+  - Defendent name: defendName
+  - How many children are living with you?: num_children
+    datatype: integer  
+  - html: <span class="groupTitle">Other Information</span>  
+  - Your annual gross income last year: preYrGrossIncome
+    datatype: currency
+    help: |
+      You must attach copy of all W-2 and 1099 forms from the prior year when you submit this financial statement to the court.
+  - How many years have you paid into Social Security?: numYrSS
+    datatype: integer
+  - html: <span class="groupTitle">Your Employment</span>  
+  - What is your occupation?: occupation
+  - Are you employed?: employed
+    datatype: yesnoradio    
+  - How many jobs do you have?: employer.target_number
+    datatype: integer
+    min: 1
+    show if: 
+      variable: employed
+      is: True
+section: Personal_Info
+progress: 10
+
+ 

@@ -1,0 +1,93 @@
+---
+if: debtsDone
+question: |
+  Sign your name
+subquestion: |
+  By signing your name, you agree to our terms and conditions.
+signature: client.signature
+under: |
+  ${ client.name }
+section: Signature
+progress: 99
+---
+if: client.signature
+question: |
+subquestion: |
+  Enter signature date.
+fields:
+  - Your signature date: client.signatureDate
+    datatype: date
+    default: ${today().format("yyyy-MM-dd")}
+progress: 99
+---
+if: client.signatureDate
+event: client.endpoint
+code: |  
+  if ynLawyer:
+    if not defined('attorney.signature'):   
+      waiting_on_attorney
+    else:
+      final_screen
+  else:
+      final_screen
+---
+event: waiting_on_attorney
+question: |  
+  Done for now.  
+subquestion: |    
+  Here is the form with your signature for your review. If you need to make any corrections, use the back button; otherwise please **ask ${ attorney } to go to [this link](${ interview_url(temporary=48) }) and register with the e-mail address ${ attorney.email }** to review your form and sign. This link will **expire in 48 hours** from now.
+  
+  Periodically you can use the button below the file to check the status. You won't be able to proceed until your lawyer has signed.
+  
+  If you leave this screen or close this session after you have sent the link to your lawyer, you can always re-log in after ${ attorney } has signed, then go to "My Interviews" screen from the main manu to retrieve the signed agreement.
+
+  ${outputFile}
+buttons:
+  - Check and Proceed: refresh
+under: |
+  Check periodically. You can proceed only after your lawyer has signed the form.
+---
+comment: for attorney to review the form
+event: pre_attorney_signature
+question: |
+subquestion: |
+  Please review the form. If you agree with the form, scroll down to sign.
+ 
+  Here is the filled form:<br/>
+  ${outputFile}
+action buttons:
+  - label: I Agree
+    action: attorney.endpoint    
+    color: success
+---
+event: attorney.endpoint
+code: |  
+  attorney.BBONum  
+---
+question: |
+subquestion: |
+  Please enter the required attorney information.
+fields:
+  - Your street address: attorney.address.address
+    address autocomplete: True
+  - City/town: attorney.address.city
+  - State: attorney.address.state
+    code: |
+      states_list()	  
+  - Zip: attorney.address.zip
+  - Phone number: attorney.TelNo
+  - Your B.B.O. number: attorney.BBONum
+  - Your signature date: attorney.signatureDate
+    datatype: date
+    default: ${today().format("yyyy-MM-dd")}
+---
+question: |
+subquestion: |
+  Please sign your name below.
+signature: attorney.signature
+under: |
+  ${ attorney.name }
+---
+code: |
+  goSign = bool(len(attorney.address.address)>0)
+
