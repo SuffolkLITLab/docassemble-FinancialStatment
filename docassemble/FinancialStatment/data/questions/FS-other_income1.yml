@@ -180,16 +180,16 @@ comment: |
 if: nonJobIncome
 code: |      
   #1. Convert monthly amounts to weekly
-  wklyAnnuity = round(annuityAmt/4, 0)
-  wklyPension = round(pensionAmt/4, 0)
-  wklyRetFund = round(retFundAmt/4, 0)
-  wklySS = round(SSAmt/4, 0)
-  wklyDis = round(disAmt/4, 0)
-  wklyWelfare = round(welfareAmt/4, 0)
-  wklyTAFDC = round(tafdcAmt/4, 0)
-  wklySNAP = round(snapAmt/4, 0)
-  wklyOtherPub = round(otherPubBenAmt/4, 0)
-  wklyAlimony = round(alimonyAmt/4, 0)
+  wklyAnnuity = round(annuityAmt/4.3, 0)
+  wklyPension = round(pensionAmt/4.3, 0)
+  wklyRetFund = round(retFundAmt/4.3, 0)
+  wklySS = round(SSAmt/4.3, 0)
+  wklyDis = round(disAmt/4.3, 0)
+  wklyWelfare = round(welfareAmt/4.3, 0)
+  wklyTAFDC = round(tafdcAmt/4.3, 0)
+  wklySNAP = round(snapAmt/4.3, 0)
+  wklyOtherPub = round(otherPubBenAmt/4.3, 0)
+  wklyAlimony = round(alimonyAmt/4.3, 0)
   wklyTotalMon = wklyAnnuity + wklyPension + wklyRetFund + wklySS + wklyDis  + wklyWelfare + wklyTAFDC + wklySNAP + wklyOtherPub + wklyAlimony
   #2. Convert amounts with various frequencies to weekly
   if ynDividend:

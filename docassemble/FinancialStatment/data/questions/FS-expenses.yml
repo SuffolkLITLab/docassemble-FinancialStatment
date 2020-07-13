@@ -153,23 +153,23 @@ code: |
     health_provider = ''
     
   #1. Convert monthly expenses to weekly
-  wklyRentExp = round(mthlyRent/4, 0)
-  wklyHomeIns = round(mthlyHomeInsurance/4, 0)
-  wklyHeat=round(mthlyHeat/4, 0) 
-  wklyElecGas=round(mthlyElecGas/4, 0) 
-  wklyTelephone = round(mthlyTelephon/4, 0)
-  wklyWater = round(mthlyWater/4, 0)
-  wklyLifeIns = round(mthlyLifeIns/4, 0)
-  wklyMedIns = round(mthlyMedIns/4, 0)
-  wklyCarLoan = round(mthlyCarLoan/4, 0)
+  wklyRentExp = round(mthlyRent/4.3, 0)
+  wklyHomeIns = round(mthlyHomeInsurance/4.3, 0)
+  wklyHeat=round(mthlyHeat/4.3, 0) 
+  wklyElecGas=round(mthlyElecGas/4.3, 0) 
+  wklyTelephone = round(mthlyTelephon/4.3, 0)
+  wklyWater = round(mthlyWater/4.3, 0)
+  wklyLifeIns = round(mthlyLifeIns/4.3, 0)
+  wklyMedIns = round(mthlyMedIns/4.3, 0)
+  wklyCarLoan = round(mthlyCarLoan/4.3, 0)
   wklyTotalMonExp = wklyRentExp + wklyHomeIns + wklyHeat + wklyElecGas + wklyTelephone + wklyWater + wklyLifeIns + wklyMedIns + wklyCarLoan
   #2. Convert annual expenses to weekly
-  wklyHRepair = round(yrlyHouseRepair/52.14, 0)
-  wklyClothing = round(yrlyClothing/52.14, 0)
-  wklyUninsMed = round(yrlyUninsuredMed/52.14, 0)
-  wklyIncidental = round(yrlyIncidental/52.14, 0)
-  wklyCarExpense = round(yrlyCarExpense/52.14, 0)
-  wklyOtherExpense = round(yrlyOtherExpense/52.14, 0)
+  wklyHRepair = round(yrlyHouseRepair/52, 0)
+  wklyClothing = round(yrlyClothing/52, 0)
+  wklyUninsMed = round(yrlyUninsuredMed/52, 0)
+  wklyIncidental = round(yrlyIncidental/52, 0)
+  wklyCarExpense = round(yrlyCarExpense/52, 0)
+  wklyOtherExpense = round(yrlyOtherExpense/52, 0)
   wklyTotalAnnExp = wklyHRepair + wklyClothing + wklyUninsMed + wklyIncidental + wklyCarExpense + wklyOtherExpense
   #3. Add up all weekly expenses from user's answers
   wklyTotalWkUser = Food + HouseSupplies + laundry + childCare

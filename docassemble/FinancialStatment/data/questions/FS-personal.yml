@@ -9,9 +9,11 @@ fields:
   - html: <span class="groupTitle">Your Personal Information</span>
   - Your first name: client.name.first  
   - Your last name: client.name.last  
-  - Your Social Security Number: client.ssn  
+  - Last 4 digits of your Social Security Number: client.ssn  
+    minlength: 4
+    maxlength: 4
     help: |
-      You must have a valid Social Security Number for this statement.
+      Enter the last 4 digits of your Social Security Number if you have one. If you don't, enter 0000.
   - Your date of birth: client.birthdate
     datatype: date	  
   - Your street address: client.address.address
