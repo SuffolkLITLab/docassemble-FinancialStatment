@@ -93,9 +93,7 @@ fields:
 section: Expenses
 progress: 51
 ---
-comment: |
-  if wklyTotalExpense=0, you may see some error, but since everyone must have some expenses, that is not a real scenario.
-if: wklyTotalExpense > 0
+if: wklyTotalExpense >= 0
 question: |  
 subquestion: |
   Enter your lawyer expense information.
