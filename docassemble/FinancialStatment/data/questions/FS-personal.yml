@@ -1,6 +1,8 @@
 ---
-objects: 
-  - employer: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True) 
+comment: |
+  In order for 'address autocomplete' to work, the object has to be a subclass of Person, not "Thing", because Thing doesn't have 'address' attribute.
+objects:   
+  - employer: DAList.using(object_type=Organization, complete_attribute='complete', ask_number=True) 
 ---
 question: |
 subquestion: |
@@ -17,7 +19,9 @@ fields:
   - Your date of birth: client.birthdate
     datatype: date	  
   - Your street address: client.address.address
-    address autocomplete: True
+    address autocomplete: True    
+  - Unit/apartment number: client.address.unit
+    required: False
   - City/town: client.address.city
   - State: client.address.state
     code: |
@@ -40,7 +44,6 @@ fields:
   - How many years have you paid into Social Security?: numYrSS
     datatype: integer
   - html: <span class="groupTitle">Your Employment</span>  
-  - What is your occupation?: occupation
   - Are you employed?: employed
     datatype: yesnoradio    
   - How many jobs do you have?: employer.target_number
@@ -50,6 +53,11 @@ fields:
       variable: employed
       is: True
 section: Personal_Info
-progress: 10
-
- 
+progress: 5
+---
+comment: combine street address with unit number into one variable.
+code: |
+  if len(client.address.unit)>0:
+    userAddress = client.address.address + ', Unit/Apt ' + client.address.unit   
+  else:
+    userAddress = client.address.address
