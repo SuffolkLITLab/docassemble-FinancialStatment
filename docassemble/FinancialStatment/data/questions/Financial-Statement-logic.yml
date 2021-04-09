@@ -7,8 +7,15 @@ metadata:
   continue button label: Next
 ---
 modules:
-  - docassemble.base.core
-  - docassemble.VirtualCourtToolbox.addenda
+  - docassemble.base.core  
+---
+features:
+  navigation: True
+  progress bar: True
+  question back button: True
+  navigation back button: False
+  css: financialStmt-styles.css
+  bootstrap theme: https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cerulean/bootstrap.min.css
 ---
 include:
   - FS-personal.yml  
@@ -74,13 +81,6 @@ sections:
   - Debts
   - Signature  
 ---
-features:
-  navigation: True
-  progress bar: True
-  question back button: True
-  navigation back button: False
-  css: financialStmt-styles.css
----
 mandatory: True
 code: |
   menu_items = [ action_menu_item('Roadmap', 'road_map') ]
@@ -104,7 +104,7 @@ subquestion: |
   **<span class="groupTitle">Important</span>:** Please go thru each screen carefully and slowly. Although you can go back to a prior screen to change your answers, all the earlier input on the screens after that screen will be lost.<br/><br/>
   Please gather the following information before you start, you will need them to answer questions:
   <ul>
-    <li>Your social security number (you must have a valid one)</li>
+    <li>Your social security number</li>
     <li>Your pay stubs for all your jobs if you are working</li>
     <li>All your living expense weekly/monthly bills</li>
     <li>All the paperwork for your assets - houses, cars, life insurances, stocks, etc. </li>

@@ -15,14 +15,14 @@ subquestion: |
   Do not enter worker's comp on this screen. 
 fields:  
   - html: <span class="groupTitle">Employer's Information</span>
-  - Name: employer[i].name.text
-  - Street address: employer[i].street
+  - Name: employer[i].name.first
+  - Street address: employer[i].address.address
     address autocomplete: True
-  - City/Town: employer[i].city
-  - State: employer[i].state
+  - City/Town: employer[i].address.city
+  - State: employer[i].address.state
     code: |
       states_list()
-  - Zip: employer[i].zip
+  - Zip: employer[i].address.zip
   - Phone number: employer[i].TelNo
   - html: <span class="groupTitle">Your Job Information</span>
   - Occupation: employer[i].occupation
