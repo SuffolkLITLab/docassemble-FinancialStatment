@@ -1,4 +1,5 @@
 ---
+id: Living Expenses
 if: OtherIncomeDone
 comment: This section has no iteration.
 question: |  
@@ -93,7 +94,8 @@ fields:
 section: Expenses
 progress: 51
 ---
-if: wklyTotalExpense >= 0
+id: Lawyer Expenses
+need: wklyTotalExpense
 question: |  
 subquestion: |
   Enter your lawyer expense information.

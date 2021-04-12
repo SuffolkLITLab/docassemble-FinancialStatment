@@ -8,6 +8,7 @@ objects:
   - deferredPlan: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
   - otherAssets: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
 ---
+id: Real Estate Number
 if: expensesDone
 comment: |
   Page 3 - Assets (a), collect property info. All asset categories have iterations.
@@ -24,6 +25,7 @@ fields:
 section: Assets
 progress: 66
 ---
+id: Real Estate Details
 if: ynHouse
 question: |    
 subquestion: | 
@@ -78,6 +80,7 @@ code: |
   TotalHouseVal = 0
   houseDone = True
 ---
+id: Automobile Number
 if: houseDone
 comment: |
   Page 3 - Assets (b), collect automobile info.  
@@ -94,6 +97,7 @@ fields:
 section: Assets
 progress: 68
 ---
+id: Automobile Details
 if: ynCar
 question: |    
 subquestion: |
@@ -139,6 +143,7 @@ code: |
   TotalAutoEqt = 0
   carDone = True
 ---
+id: Retirement Plans Number
 if: carDone
 comment: |
   Page 3 - Assets (c), collect retirement funds info. This should not apply to retirees.
@@ -157,6 +162,7 @@ fields:
 section: Assets
 progress: 70
 ---
+id: Retirement Plans Details
 if: ynRetPlan
 question: |    
 subquestion: |

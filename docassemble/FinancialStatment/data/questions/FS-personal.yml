@@ -1,4 +1,5 @@
 ---
+id: Personal Info
 comment: |
   In order for 'address autocomplete' to work, the object has to be a subclass of Person, not "Thing", because Thing doesn't have 'address' attribute.
 objects:   

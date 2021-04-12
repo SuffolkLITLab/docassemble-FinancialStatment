@@ -1,4 +1,5 @@
 ---
+id: Rent Income
 comment:  Collect income info for the rent income questions.
 if: ynRentIncome
 question: |

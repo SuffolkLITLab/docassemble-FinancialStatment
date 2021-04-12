@@ -1,4 +1,5 @@
 ---
+id: Have Non-job Income
 if: jobIncomeDone
 comment: |
   Collect all non-job income info. No iterations.
@@ -11,6 +12,7 @@ fields:
 section: Other_Sources
 progress: 42
 ---
+id: Mthly Non-job Income
 if: nonJobIncome 
 question: |
 subquestion: |
