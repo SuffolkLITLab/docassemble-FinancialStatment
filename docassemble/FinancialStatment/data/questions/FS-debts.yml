@@ -2,6 +2,7 @@
 objects:  
   - debts: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True) 
 ---
+id: Debts Number
 if: assetsDone
 comment: Iterate each debt type separately.
 question: |  
@@ -18,6 +19,7 @@ fields:
 section: Debts
 progress: 82
 ---
+id: Debts Details
 if: ynDebts
 question: |    
 subquestion: | 
@@ -52,7 +54,8 @@ code: |
   debts[i].name.text
   debts[i].date
   debts[i].complete = True   
-  
+---
+code: |    
   count = 0
   for y in debts:
     count += 1

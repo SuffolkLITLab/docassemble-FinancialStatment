@@ -97,6 +97,7 @@ buttons:
   - Log in: signin
   - Exit: exit
 ---
+id: Intro
 comment: this is the first screen the user sees.
 question: |
 subquestion: |
@@ -115,6 +116,7 @@ field: sees_nav_bar
 section: Introduction
 progress: 2
 ---
+id: Download Screen
 event: final_screen
 question: |
 subquestion: |
@@ -147,6 +149,7 @@ comment: convert docx to pdf for preview
 code: |      
   outputFile = pdf_concatenate(shortform, filename="preview.pdf")
 ---
+id: Welcome Back
 event: welcome_back
 question: |
   Welcome back!

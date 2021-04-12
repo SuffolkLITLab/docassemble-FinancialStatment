@@ -1,4 +1,5 @@
 ---
+id: Job Type and ER Info
 comment: |
   Collect general job info for each job.
 if: employed 
@@ -36,6 +37,7 @@ fields:
 section: From_Jobs
 progress: 15
 ---
+id: Job Income as Employee
 comment: |
   Collect income info for each job, except self employed job.
 if: |

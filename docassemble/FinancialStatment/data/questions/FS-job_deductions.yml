@@ -1,4 +1,5 @@
 ---
+id: Job Income Deductions
 comment: |
   Collect pay deductions from each job.
 if: employer[i].wage != None or employer[i].mthReceipts > 0

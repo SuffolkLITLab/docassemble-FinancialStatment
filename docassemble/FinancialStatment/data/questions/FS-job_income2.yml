@@ -1,4 +1,5 @@
 ---
+id: Self Employed Income 
 comment: |
   Collect income info for a self-employed job. Assume only one job is self-employed, thus we don't to use employer[i] in the questions.
 if: employer[i].jobType == "selfEmp"
@@ -133,6 +134,7 @@ fields:
 section: From_Jobs
 progress: 15    
 ---
+id: Business Nature
 question: |
 subquestion: |
   Is this business seasonal in nature?
@@ -142,6 +144,7 @@ fields:
 section: From_Jobs
 progress: 30
 ---
+id: Montly Income Percentage
 if: ynSeasonal
 question: |
 subquestion: |
@@ -273,6 +276,7 @@ fields:
 section: From_Jobs
 progress: 32 
 ---
+id: Accounting Basis
 question: |
 subquestion: |
   What is your accounting basis?
