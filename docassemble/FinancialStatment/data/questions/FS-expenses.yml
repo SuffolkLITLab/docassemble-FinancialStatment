@@ -54,7 +54,7 @@ fields:
   - Food: Food
     datatype: currency
     default: 0
-  - Hourse supplies: HouseSupplies
+  - House supplies: HouseSupplies
     datatype: currency
     default: 0
   - Laundry and cleaning: laundry
@@ -80,7 +80,7 @@ fields:
   - Incidentals and toiletries: yrlyIncidental
     datatype: currency
     default: 0
-  - Mortal vehicle expenses: yrlyCarExpense
+  - Motor vehicle expenses: yrlyCarExpense
     datatype: currency
     default: 0
     help: |

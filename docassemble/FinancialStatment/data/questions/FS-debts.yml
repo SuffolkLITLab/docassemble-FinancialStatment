@@ -6,6 +6,8 @@ id: Debts Number
 if: assetsDone
 comment: Iterate each debt type separately.
 question: |  
+subquestion: |
+  Enter your labilities information, such as credit cards, bank loans, personal loans, school loans.
 fields:
   - html: <span class="groupTitle">Liabilities</span><br/>
       Do not include expenses, mortgage or auto loans, you already entered them earlier.

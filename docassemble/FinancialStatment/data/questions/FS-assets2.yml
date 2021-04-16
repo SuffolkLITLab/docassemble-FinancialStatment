@@ -89,7 +89,7 @@ subquestion: |
   % endif
 fields:    
   - Insurance company name: lifeInsurance[i].name.text
-  - How much do you insured?: lifeInsurance[i].amt
+  - For how much money are you insured?: lifeInsurance[i].amt
     datatype: currency
 section: Assets
 progress: 74
