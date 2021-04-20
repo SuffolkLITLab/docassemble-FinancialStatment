@@ -1,6 +1,5 @@
 ---
-id: Signature
-if: debtsDone
+id: Client Signature
 question: |
   Sign your name
 subquestion: |
@@ -12,7 +11,6 @@ section: Signature
 progress: 99
 ---
 id: Signature Date
-if: client.signature
 question: |
 subquestion: |
   Enter signature date.
@@ -21,17 +19,6 @@ fields:
     datatype: date
     default: ${today().format("yyyy-MM-dd")}
 progress: 99
----
-if: client.signatureDate
-event: client.endpoint
-code: |  
-  if ynLawyer:
-    if not defined('attorney.signature'):   
-      waiting_on_attorney
-    else:
-      final_screen
-  else:
-      final_screen
 ---
 id: Wait on Attorney
 event: waiting_on_attorney
@@ -50,8 +37,8 @@ buttons:
 under: |
   Check periodically. You can proceed only after your lawyer has signed the form.
 ---
-id: Attorney Consent
 comment: for attorney to review the form
+id: Attorney Consent
 event: pre_attorney_signature
 question: |
 subquestion: |

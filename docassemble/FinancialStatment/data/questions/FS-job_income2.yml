@@ -1,8 +1,7 @@
 ---
-id: Self Employed Income 
 comment: |
   Collect income info for a self-employed job. Assume only one job is self-employed, thus we don't to use employer[i] in the questions.
-if: employer[i].jobType == "selfEmp"
+id: Self Employed Income 
 question: |
 subquestion: |
   In order to fill in Schedule A for your self-employed job income, please use your business report to answer the following questions. We will calculate your weekly income based on your input.
@@ -144,8 +143,7 @@ fields:
 section: From_Jobs
 progress: 30
 ---
-id: Montly Income Percentage
-if: ynSeasonal
+id: Monthly Income Percentage
 question: |
 subquestion: |
   Specify the percentage of income received and expenses incurred for each month of the year.
@@ -306,7 +304,6 @@ fields:
 section: From_Jobs
 progress: 40 
 ---
-if: ynSeasonal
 code: |  
   # Check the total percentages
   totalIncomePct = incomeJan + incomeFeb + incomeMar + incomeApr + incomeMay + incomeJun + incomeJul + incomeAug + incomeSep + incomeOct + incomeNov + incomeDec
@@ -316,13 +313,3 @@ code: |
     log("The total income percentages for the year must be 100%", "error")
   elif totalExpPct != 100:
     log("The total expense percentages for the year must be 100%", "error")
----
-code: |
-  if (ynSeasonal == False or totalExpPct == 100) and yrToDateExpenses>0 :
-    pctDone = True
----
-comment: |
-  Have to set this field, it's used to signal deduction questions.
-if: employer[i].jobType == "selfEmp"
-code: |
-  employer[i].wage = ''

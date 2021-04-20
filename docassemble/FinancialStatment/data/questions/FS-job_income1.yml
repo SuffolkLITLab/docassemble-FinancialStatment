@@ -1,8 +1,7 @@
 ---
-id: Job Type and ER Info
 comment: |
   Collect general job info for each job.
-if: employed 
+id: Job Type and ER Info
 question: |    
 subquestion: | 
   % if employer.target_number > 1 and i==0:
@@ -37,11 +36,9 @@ fields:
 section: From_Jobs
 progress: 15
 ---
-id: Job Income as Employee
 comment: |
   Collect income info for each job, except self employed job.
-if: |
-  employer[i].jobType == "fullTime" or employer[i].jobType == "partTime"
+id: Job Income as Employee
 question: |
 subquestion: |
   Use your pay stub for this job to answer the following questions.

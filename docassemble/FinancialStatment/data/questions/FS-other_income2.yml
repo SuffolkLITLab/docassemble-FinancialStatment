@@ -1,7 +1,6 @@
 ---
-id: Rent Income
 comment:  Collect income info for the rent income questions.
-if: ynRentIncome
+id: Rent Income
 question: |
 subquestion: |
   In order to fill in Schedule B for rental income, please answer the following questions. We will calculate your weekly income based on your input.
