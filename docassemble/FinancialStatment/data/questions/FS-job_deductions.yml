@@ -1,8 +1,7 @@
 ---
-id: Job Income Deductions
 comment: |
   Collect pay deductions from each job.
-if: employer[i].wage != None or employer[i].mthReceipts > 0
+id: Job Income Deductions
 question: |
 subquestion: |
   Use your pay stub to find your deduction information. **The deduction period must match the pay period. **For example, if you entered your pay as weekly pay, the deduction must be weekly deduction. 
@@ -68,7 +67,6 @@ progress: 50
 ---
 comment: |
   Convert pay into weekly amounts and add them up.
-if: employed
 code: |  
   employer[i].name
   employer[i].wage
@@ -94,9 +92,9 @@ code: |
     mthIncome = mthReceipts - totMthExp 
     wklyIncome = round(mthIncome/4.3, 0)	
     
-    if pctDone:
-      employer[i].fedTaxDed 
-      employer[i].complete = True    
+    #if pctDone:
+    employer[i].fedTaxDed 
+    employer[i].complete = True    
   else:
     employer[i].fedTaxDed 
     employer[i].complete = True
@@ -106,10 +104,7 @@ code: |
   for y in employer:
     count += 1
   if count == employer.target_number:
-    jobIncomeDone = True
-
-  #Calculate income from all jobs after the last job's info collected.
-  if jobIncomeDone:     
+    #Calculate income from all jobs after the last job's info collected.
     fullTimeWkPay = 0
     partTimeWkPay = 0
     selfEmpWkPay = 0   
@@ -333,7 +328,3 @@ code: |
   SW = ''
   CB = ''  
   LS = ''
-  
-  jobIncomeDone = True
-
-    

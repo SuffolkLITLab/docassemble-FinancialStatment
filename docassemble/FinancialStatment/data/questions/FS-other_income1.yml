@@ -1,6 +1,5 @@
 ---
 id: Have Non-job Income
-if: jobIncomeDone
 comment: |
   Collect all non-job income info. No iterations.
 question: |
@@ -12,8 +11,7 @@ fields:
 section: Other_Sources
 progress: 42
 ---
-id: Mthly Non-job Income
-if: nonJobIncome 
+id: Mthly Non-job Income 
 question: |
 subquestion: |
    Enter all the income from non-job related sources.   
@@ -238,7 +236,7 @@ code: |
   pubBens = wklyWelfare + wklyTAFDC + wklySNAP + wklyOtherPub
   chldAli = ChildSupportAmt + wklyAlimony
   
-  #6. Add other income deductions to job deductions
+  #6. Add other income deductions to job deduction vars
   wklyFedDed += OtherIncome_fedTaxDed
   wklyStateDed += OtherIncome_stateTaxDed
 	totFedClaimed += OtherIncome_fedNumClaimed
@@ -251,8 +249,6 @@ code: |
   wklyAdjIncome = round(wklyGrossIncome - wklyTotalItemDed, 0)
   #7.3 Calculate weekly net income
   wklyNetIncome = round(wklyAdjIncome - wklyTotNItemDed, 0)  
-  
-  OtherIncomeDone = True
 ---
 comment: |
   Set defaults for the non-job related income section, then set defaults for the 3 total numbers.
@@ -287,7 +283,5 @@ code: |
   
   wklyGrossIncome = wklyTotalJobIncome  
   wklyAdjIncome = round(wklyGrossIncome - wklyTotalItemDed, 0)
-  wklyNetIncome = round(wklyAdjIncome - wklyTotNItemDed, 0)  
-  
-  OtherIncomeDone = True
+  wklyNetIncome = round(wklyAdjIncome - wklyTotNItemDed, 0)    
     

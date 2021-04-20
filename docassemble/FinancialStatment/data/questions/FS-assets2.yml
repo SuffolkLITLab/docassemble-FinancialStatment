@@ -1,8 +1,7 @@
 ---
-id: Deferred Annuities Number
-if: retPlansDone
 comment: |
   Page 3 - Assets (d), collect deferred annuity info.  
+id: Deferred Annuities Number
 question: |
 subquestion: |
 	Enter information related to your deferred annuities, such as a 403(b) plan offered from a job, or you bought one from a bank or similar financial institution.
@@ -19,7 +18,6 @@ section: Assets
 progress: 72
 ---
 id: Deferred Annuities Details
-if: yndeferredPlan
 question: |    
 subquestion: |
   % if deferredPlan.target_number > 1:
@@ -43,10 +41,8 @@ code: |
   count = 0
   for y in deferredPlan:
     count += 1
-  if count == deferredPlan.target_number:
-    deferDone = True  
-  #Accumulate deferred plans value after the last plan's info collected.
-  if deferDone:  
+  if count == deferredPlan.target_number:    
+    #Accumulate deferred plans value after the last plan's info collected.  
     TotaldefVal = 0
 	  for y in deferredPlan:           		
 		  TotaldefVal += y.amt
@@ -56,13 +52,11 @@ code: |
   deferredPlan[0].name.text = ''
   deferredPlan.target_number = 0
   deferredPlan[0].complete = True
-  TotaldefVal = 0
-  deferDone = True
+  TotaldefVal = 0  
 ---
-id: Life Insurance Number
-if: deferDone
 comment: |
   Page 3 - Assets (e), collect life insurance info.  
+id: Life Insurance Number
 question: |
 subquestion: |
 	Enter life insurance info.
@@ -79,7 +73,6 @@ section: Assets
 progress: 74
 ---
 id: Life Insurance Details
-if: ynlifeInsurance
 question: |    
 subquestion: |
   % if lifeInsurance.target_number > 1:
@@ -103,10 +96,8 @@ code: |
   count = 0
   for y in lifeInsurance:
     count += 1
-  if count == lifeInsurance.target_number:
-    insureDone = True  
-  #Accumulate life insurance values after the last policy's info collected.
-  if insureDone:    
+  if count == lifeInsurance.target_number:     
+    #Accumulate life insurance values after the last policy's info collected.
     totLifeInsVal = 0
 	  for y in lifeInsurance:           		
 		  totLifeInsVal += y.amt
@@ -116,13 +107,11 @@ code: |
   lifeInsurance[0].name.text = ''  
   lifeInsurance.target_number = 0
   lifeInsurance[0].complete = True
-  totLifeInsVal = 0
-  insureDone = True
+  totLifeInsVal = 0  
 ---
-id: Personal Savings Number
-if: insureDone
 comment: |
   Page 3 - Assets (f), collect savings info.  
+id: Personal Savings Number
 question: |
 subquestion: |
 	Enter information related to your personal savings, whether in your name, jointly or in the name of another for your benefit or your children's benefit. This include all the savings and checking accounts, money market accounts, certificate of deposits.
@@ -139,7 +128,6 @@ section: Assets
 progress: 76
 ---
 id: Personal Savings Details
-if: ynSavingsPlan
 question: |    
 subquestion: |
   % if savingsPlan.target_number > 1:
@@ -167,9 +155,7 @@ code: |
   for y in savingsPlan:
     count += 1
   if count == savingsPlan.target_number:
-    savingsDone = True  
-  #Accumulate savings plans value after the last plan's info collected.
-  if savingsDone:   
+    #Accumulate savings plans value after the last plan's info collected.  
     TotalSavingsVal = 0
 	  for y in savingsPlan:           		
 		  TotalSavingsVal += y.amt
@@ -179,13 +165,11 @@ code: |
   savingsPlan[0].name.text = ''
   savingsPlan.target_number = 0  
   savingsPlan[0].complete = True
-  TotalSavingsVal = 0
-  savingsDone = True
+  TotalSavingsVal = 0  
 ---
-id: Other Assets Number
-if: savingsDone
 comment: |
   Page 3 - Assets (g), collect other assets info.  
+id: Other Assets Number
 question: |
 subquestion: |
 	Enter other assets information, for example, stocks, bonds and collections.
@@ -228,9 +212,7 @@ code: |
   for y in otherAssets:
     count += 1
   if count == otherAssets.target_number:
-    otherDone = True  
-  #Accumulate other asset values after the last one is collected.
-  if otherDone:     
+    #Accumulate other asset values after the last one is collected.
     TotalOtherAssetsVal = 0
 	  for y in otherAssets:           		
 		  TotalOtherAssetsVal += y.amt
@@ -240,8 +222,7 @@ code: |
   otherAssets[0].name.text = ''  
   otherAssets.target_number = 0
   otherAssets[0].complete = True
-  TotalOtherAssetsVal = 0
-  otherDone = True
+  TotalOtherAssetsVal = 0  
 ---
 code: |
   #Add up all the assets
@@ -254,5 +235,3 @@ code: |
     addAssets = True
   else:    
     addAssets = False
-
-

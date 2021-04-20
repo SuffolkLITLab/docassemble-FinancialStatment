@@ -1,10 +1,10 @@
 ---
-id: Personal Info
 comment: |
   In order for 'address autocomplete' to work, the object has to be a subclass of Person, not "Thing", because Thing doesn't have 'address' attribute.
 objects:   
   - employer: DAList.using(object_type=Organization, complete_attribute='complete', ask_number=True) 
 ---
+id: Personal Info
 question: |
 subquestion: |
   Please answer the following questions.  

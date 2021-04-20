@@ -1,7 +1,7 @@
 ---
-id: Other Income Deductions
 comment: |
   Collect deductions for other income. No iterations.
+id: Other Income Deductions
 question: |
 subquestion: |
   If you have tax withholding for any of your non-job related income, enter here.

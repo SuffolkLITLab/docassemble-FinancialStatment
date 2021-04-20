@@ -1,7 +1,6 @@
 ---
-id: Living Expenses
-if: OtherIncomeDone
 comment: This section has no iteration.
+id: Living Expenses
 question: |  
 subquestion: |
   Enter your living expense info.
@@ -95,7 +94,6 @@ section: Expenses
 progress: 51
 ---
 id: Lawyer Expenses
-need: wklyTotalExpense
 question: |  
 subquestion: |
   Enter your lawyer expense information.
@@ -176,10 +174,4 @@ code: |
   #3. Add up all weekly expenses from user's answers
   wklyTotalWkUser = Food + HouseSupplies + laundry + childCare
   #4. Calculate total weekly expense from all converted amounts
-  wklyTotalExpense = wklyTotalMonExp + wklyTotalAnnExp + wklyTotalWkUser
-
----
-code: |
-  if ynLawyer != None:
-    expensesDone = True
-    
+  wklyTotalExpense = wklyTotalMonExp + wklyTotalAnnExp + wklyTotalWkUser   

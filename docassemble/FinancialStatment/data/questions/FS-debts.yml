@@ -2,9 +2,8 @@
 objects:  
   - debts: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True) 
 ---
-id: Debts Number
-if: assetsDone
 comment: Iterate each debt type separately.
+id: Number of Debts
 question: |  
 subquestion: |
   Enter your labilities information, such as credit cards, bank loans, personal loans, school loans.
@@ -22,11 +21,10 @@ section: Debts
 progress: 82
 ---
 id: Debts Details
-if: ynDebts
 question: |    
 subquestion: | 
   % if debts.target_number > 1:
-    Please enter information related to your ${ ordinal(i) } debt.
+    Please enter information related to your **${ ordinal(i) }** debt.
   % else:
     Please enter information related to your debt. 
   % endif
@@ -62,10 +60,7 @@ code: |
   for y in debts:
     count += 1
   if count == debts.target_number:
-    debtsDone = True
-
-  #Accumulate debts value after the last debt's info collected.
-  if debtsDone:       
+    #Accumulate debts value after the last debt's info collected.
     TotalDebtDue = 0
     TotalDebtPmt = 0
     debts[0].wklyPmt = 0   
@@ -80,5 +75,4 @@ code: |
   # Set defaults if no debt.   
   debts[0].name.text = ''      
   debts[0].amtDue = 0  
-  debts.target_number = 0
-  debtsDone = True  
+  debts.target_number = 0  

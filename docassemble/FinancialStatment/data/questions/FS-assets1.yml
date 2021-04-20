@@ -8,10 +8,9 @@ objects:
   - deferredPlan: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
   - otherAssets: DAList.using(object_type=Thing, complete_attribute='complete', ask_number=True)
 ---
-id: Real Estate Number
-if: expensesDone
 comment: |
   Page 3 - Assets (a), collect property info. All asset categories have iterations.
+id: Real Estate Number
 question: |  
 fields:
   - html: <span class="groupTitle">Real Estate</span>
@@ -26,7 +25,6 @@ section: Assets
 progress: 66
 ---
 id: Real Estate Details
-if: ynHouse
 question: |    
 subquestion: | 
   % if houses.target_number > 1:
@@ -62,10 +60,8 @@ code: |
   count = 0
   for y in houses:
     count += 1
-  if count == houses.target_number:
-    houseDone = True  
-  #Accumulate proptert value after the last property's info collected.
-  if houseDone:       
+  if count == houses.target_number:    
+    #Accumulate proptert value after the last property's info collected.
 	  TotalHouseVal = 0
     houses[0].hEquity = 0
     for y in houses:           		
@@ -77,13 +73,11 @@ code: |
   houses[0].name.text = ''    
   houses.target_number = 0
   houses[0].complete = True
-  TotalHouseVal = 0
-  houseDone = True
+  TotalHouseVal = 0  
 ---
-id: Automobile Number
-if: houseDone
 comment: |
   Page 3 - Assets (b), collect automobile info.  
+id: Automobile Number
 question: |
 fields:
   - html: <span class="groupTitle">Motor Vehicle</span>
@@ -98,7 +92,6 @@ section: Assets
 progress: 68
 ---
 id: Automobile Details
-if: ynCar
 question: |    
 subquestion: |
   % if auto.target_number > 1:
@@ -125,10 +118,8 @@ code: |
   count = 0
   for y in auto:
     count += 1
-  if count == auto.target_number:
-    carDone = True 
-  #Accumulate automobiles value after the last auto's info collected.
-  if carDone:       
+  if count == auto.target_number:    
+    #Accumulate automobiles value after the last auto's info collected.  
     auto[0].equity = 0
     TotalAutoEqt = 0 
 	  for y in auto:           			  
@@ -140,13 +131,11 @@ code: |
   auto[0].name.text = ''
   auto.target_number = 0
   auto[0].complete = True
-  TotalAutoEqt = 0
-  carDone = True
+  TotalAutoEqt = 0  
 ---
-id: Retirement Plans Number
-if: carDone
 comment: |
   Page 3 - Assets (c), collect retirement funds info. This should not apply to retirees.
+id: Retirement Plans Number
 question: |
 subquestion: |
 	Enter information related to your retirement plans, including company provided plans and personal IRA plans, such as IRA, Keogh, 401(k), Pension, Profit Sharing plans and others.
@@ -200,10 +189,8 @@ code: |
   count = 0
   for y in retPlans:
     count += 1
-  if count == retPlans.target_number:
-    retPlansDone = True  
-  #Accumulate retirement plans values after the last plan's info is collected.
-  if retPlansDone:         
+  if count == retPlans.target_number:    
+    #Accumulate retirement plans values after the last plan's info is collected.  
     retPlans[0].fullName = ''
     totRetPlanVal = 0
 	  for y in retPlans:    
@@ -220,4 +207,3 @@ code: |
   retPlans.target_number = 0
   retPlans[0].complete = True
   totRetPlanVal = 0
-  retPlansDone = True
