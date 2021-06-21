@@ -145,10 +145,7 @@ code: |
       #1.a. Salaried
   	  if y.wage == False:    
         SW = 's'
-		    tmpWklyBasePay = y.basePay / value(y.basePayFrequency)
-        log(y.basePay, 'info')
-        log(y.basePayFrequency, 'info')
-        log(tmpWklyBasePay, 'info')
+		    tmpWklyBasePay = y.basePay / value(y.basePayFrequency)       
         if y.ynCommission:
           CB = 'c'
           tmpWklyComm = round(y.yrCommissions/52, 0)
