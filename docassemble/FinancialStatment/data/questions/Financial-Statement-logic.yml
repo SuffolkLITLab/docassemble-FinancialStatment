@@ -151,7 +151,7 @@ code: |
     else:
       final_screen
 ---
-sections:
+sections:  
   - Introduction
   - Personal_Info
   - Income:

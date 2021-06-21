@@ -89,15 +89,14 @@ fields:
   - How often do you get paid?: employer[i].basePayFrequency
     datatype: radio
     choices:
-      - Annually: 1
-      - Monthly: 12
-      - Weekly: 52
-    help: |
-      If the frequency is not listed here, enter it as annual.
+      - Weekly: 1
+      - Bi-weekly: 2
+      - Semi-weekly: 2.15
+      - Monthly: 4.3    
     show if:
       variable: employer[i].wage
       is: False
-  - Base pay: employer[i].basePay
+  - How much is on the paycheck?: employer[i].basePay
     datatype: currency
     help: |
       This amount is before taxes or any deductions come out of your pay, and must match the frequency you entered above. Do not include commissions and bonuses, they need to be entered separately.       
