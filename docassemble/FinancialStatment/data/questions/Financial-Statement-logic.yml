@@ -17,7 +17,7 @@ features:
   css: financialStmt-styles.css
   bootstrap theme: https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/cerulean/bootstrap.min.css
 ---
-include:
+include:  
   - FS-personal.yml  
   - FS-job_income1.yml
   - FS-job_income2.yml
@@ -152,6 +152,7 @@ code: |
       final_screen
 ---
 sections:
+  - Input defaults.yml # Remove before commit
   - Introduction
   - Personal_Info
   - Income:
