@@ -43,7 +43,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.FinancialStatment',
-      version='0.6.1',
+      version='0.6.2',
       description=('A docassemble extension.'),
       long_description='This is the online form "FINANCIAL STATEMENT for Commonwealth of Massachusetts The Trial Court Probate and Family Court Department" \r\n\r\n\r\n\r\n',
       long_description_content_type='text/markdown',

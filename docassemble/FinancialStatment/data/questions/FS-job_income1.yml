@@ -91,7 +91,7 @@ fields:
     choices:
       - Weekly: 1
       - Bi-weekly: 2
-      - Semi-weekly: 2.15
+      - Semi-monthly: 2.15
       - Monthly: 4.3    
     show if:
       variable: employer[i].wage
