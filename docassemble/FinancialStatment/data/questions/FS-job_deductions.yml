@@ -191,8 +191,8 @@ code: |
       #3. Weekly itemized deductions
       #3.1 Federal deductions
       if y.wage == False:        
-		    tmpAnnFedDed = value(y.basePayFrequency) * y.fedTaxDed
-		    wklyFedDed = round(tmpAnnFedDed/52, 0)
+		    tmpWklyFedDed = y.fedTaxDed / value(y.basePayFrequency)
+        wklyFedDed = round(tmpWklyFedDed, 0)
 	    elif y.wage == True:
 		    wklyFedDed = y.fedTaxDed
 	    else:    
@@ -201,33 +201,33 @@ code: |
       tmpStClaimed = y.stateNumClaimed
       
       #3.2 State deductions
-      if y.wage == False:        
-		    tmpAnnStateDed = value(y.basePayFrequency) * y.stateTaxDed
-		    wklyStateDed = round(tmpAnnStateDed/52, 0)
+      if y.wage == False:        		    
+		    tmpWklyStateDed = y.stateTaxDed / value(y.basePayFrequency)
+        wklyStateDed = round(tmpWklyStateDed, 0)        
 	    elif y.wage == True:
 		    wklyStateDed = y.stateTaxDed
 	    else:    
 		    wklyStateDed = 0
       #3.3 FICA and medicare deductions
-      if y.wage == False:        
-		    tmpAnnFicaMedDed = value(y.basePayFrequency) * y.medicareTaxDed
-		    wklyFicaDed = round(tmpAnnFicaMedDed/52, 0)
+      if y.wage == False:
+		    tmpWklyFicaDed = y.medicareTaxDed / value(y.basePayFrequency)
+        wklyFicaDed = round(tmpWklyFicaDed, 0)
 	    elif y.wage == True:
 		    wklyFicaDed = y.medicareTaxDed
 	    else:    
 		    wklyFicaDed = 0
       #3.4 Medical deductions
-      if y.wage == False:        
-		    tmpAnnMedDed = value(y.basePayFrequency) * y.medInsTaxDed
-		    wklyMedDed = round(tmpAnnMedDed/52, 0)
+      if y.wage == False:
+		    tmpWklyMedDed = y.medInsTaxDed / value(y.basePayFrequency)
+        wklyMedDed = round(tmpWklyMedDed, 0)
 	    elif y.wage == True:
 		    wklyMedDed = y.medInsTaxDed
 	    else:    
 		    wklyMedDed = 0 
       #3.5 Union dues
-      if y.wage == False:        
-		    tmpAnnUnionDed = value(y.basePayFrequency) * y.unionDues
-		    wklyUnionDed = round(tmpAnnUnionDed/52, 0)
+      if y.wage == False: 
+		    tmpWklyUnionDed = y.unionDues / value(y.basePayFrequency)
+        wklyUnionDed = round(tmpWklyUnionDed, 0)
 	    elif y.wage == True:
 		    wklyUnionDed = y.medInsTaxDed
 	    else:    
@@ -241,9 +241,9 @@ code: |
     
       #4. Weekly other deductions
       #4.1 Credit union deductions
-      if y.wage == False:        
-		    tmpAnnCreditDed = value(y.basePayFrequency) * y.creditUnion
-		    wklyCreditDed = round(tmpAnnCreditDed/52, 0)
+      if y.wage == False:
+		    tmpWklyCreditDed = y.creditUnion / value(y.basePayFrequency)
+        wklyCreditDed = round(tmpWklyCreditDed, 0)
 	    elif y.wage == True:
 		    wklyCreditDed = y.creditUnion
 	    else:    
@@ -255,25 +255,25 @@ code: |
           LS = 's'      
         
       #4.2 Savings deductions
-      if y.wage == False:        
-		    tmpAnnSavingsDed = value(y.basePayFrequency) * y.savingsDed
-		    wklySavingsDed = round(tmpAnnSavingsDed/52, 0)
+      if y.wage == False:
+		    tmpWklySavingsDed = y.savingsDed / value(y.basePayFrequency)
+        wklySavingsDed = round(tmpWklySavingsDed, 0)
 	    elif y.wage == True:
 		    wklySavingsDed = y.savingsDed
 	    else:    
 		    wklySavingsDed = 0
       #4.3 Retirement saving deductions
-      if y.wage == False:        
-		    tmpAnnRetDed = value(y.basePayFrequency) * y.retDed
-		    wWklyRetDed = round(tmpAnnRetDed/52, 0)
+      if y.wage == False: 
+		    tmpWklyRetDed = y.retDed / value(y.basePayFrequency)
+        wklyRetDed = round(tmpWklyRetDed, 0)
 	    elif y.wage == True:
 		    wklyRetDed = y.retDed
 	    else:    
 		    wklyRetDed = 0        
       #4.4 Other weekly deductions
-      if y.wage == False:        
-		    tmpAnnOtherDed = value(y.basePayFrequency) * y.otherDed
-		    wklyOtherDed = round(tmpAnnOtherDed/52, 0)
+      if y.wage == False:
+		    tmpWklyOtherDed = y.otherDed / value(y.basePayFrequency)
+        wklyOtherDed = round(tmpWklyOtherDed, 0)
 	    elif y.wage == True:
 		    wklyOtherDed = y.otherDed
 	    else:    
