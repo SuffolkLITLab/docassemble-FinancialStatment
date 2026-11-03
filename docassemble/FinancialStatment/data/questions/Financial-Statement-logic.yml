@@ -167,6 +167,7 @@ code: |
   menu_items = [ action_menu_item('Roadmap', 'road_map') ]
 ---
 event: user_kicked_out
+id: "you are not authorized"
 question: |
   You are not authorized.
 ---
@@ -247,6 +248,7 @@ buttons:
   Continue: continue
 ---
 event: road_map
+id: "roadmap"
 question: |
   Roadmap
 subquestion: |
