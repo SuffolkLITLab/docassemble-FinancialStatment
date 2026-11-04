@@ -55,17 +55,17 @@ fields:
   - Unemployment benefit amount: unempAmt
     datatype: currency
     default: 0
-	  help: |
+    help: |
       Enter avearage weekly amount. For example, if you receive the benefit bi-weekly, divide it by 2 and enter the amount here.
   - Worker's comp benefit amount: workCompAmt
     datatype: currency
     default: 0
-	  help: |
+    help: |
       Enter avearage weekly amount. For example, if you receive the benefit bi-weekly, divide it by 2 and enter the amount here.
   - Child support amount: ChildSupportAmt
     datatype: currency
     default: 0
-	  help: |
+    help: |
       Enter avearage weekly amount. For example, if you receive the payment monthly, divide it by 4 and enter the amount here.
   - Total contributions from house members: hContribAmt
     datatype: currency
@@ -98,14 +98,14 @@ fields:
       - Monthly: 12
     help: |
       If the frequency is not listed here, enter it as annual.
-	  show if:
+    show if:
       variable: ynDividend
       is: True
   - Dividend amount: divAmt
     datatype: currency
     help: |
       This amount must match the frequency you entered above.
-	  show if:
+    show if:
       variable: ynDividend
       is: True
   - Do you receive interests?: ynInt
@@ -119,14 +119,14 @@ fields:
       - Monthly: 12
     help: |
       If the frequency is not listed here, enter it as annual.
-	  show if:
+    show if:
       variable: ynInt
       is: True
   - Interest amount: intAmt
     datatype: currency
     help: |
       This amount must match the frequency you entered above.
-	  show if:
+    show if:
       variable: ynInt
       is: True  
   - Do you receive from any trust?: ynTrust
@@ -140,14 +140,14 @@ fields:
       - Monthly: 12
     help: |
       If the frequency is not listed here, enter it as annual.
-	  show if:
+    show if:
       variable: ynTrust
       is: True
   - Trust income amount: trustAmt
     datatype: currency
     help: |
       This amount must match the frequency you entered above.
-	  show if:
+    show if:
       variable: ynTrust
       is: True  
   - Are you receiving income from royalties and rights?: ynRoyalties
@@ -159,17 +159,17 @@ fields:
       - Monthly: 12
     help: |
       If the frequency is not listed here, enter it as weekly.
-	  show if:
+    show if:
       variable: ynRoyalties
       is: True
   - Royalties and rights income amount: royaltiesAmt
     datatype: currency
-	  help: |
+    help: |
       This amount must match the frequency you entered above.
-	  show if:
+    show if:
       variable: ynRoyalties
       is: True
-	- html: <span class="groupTitle">Rent Income
+  - html: <span class="groupTitle">Rent Income
   - Are you receiving rent from your property?: ynRentIncome
     datatype: yesnoradio
 section: Other_Sources
@@ -239,8 +239,8 @@ code: |
   #6. Add other income deductions to job deduction vars
   wklyFedDed += OtherIncome_fedTaxDed
   wklyStateDed += OtherIncome_stateTaxDed
-	totFedClaimed += OtherIncome_fedNumClaimed
-	totStClaimed += OtherIncome_StateNumClaimed
+  totFedClaimed += OtherIncome_fedNumClaimed
+  totStClaimed += OtherIncome_StateNumClaimed
   wklyTotalItemDed += OtherIncome_fedTaxDed + OtherIncome_stateTaxDed
   
   #7.1 Calculate gross income from jobs and non-job sources

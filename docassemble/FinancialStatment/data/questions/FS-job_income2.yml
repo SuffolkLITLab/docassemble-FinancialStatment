@@ -306,8 +306,34 @@ progress: 40
 ---
 code: |  
   # Check the total percentages
-  totalIncomePct = incomeJan + incomeFeb + incomeMar + incomeApr + incomeMay + incomeJun + incomeJul + incomeAug + incomeSep + incomeOct + incomeNov + incomeDec
-  totalExpPct = expJan + expFeb + expMar + expApr + expMay + expJun + expJul + expAug + expSep + expOct + expNov + expDec
+  totalIncomePct = (
+    incomeJan
+    + incomeFeb
+    + incomeMar
+    + incomeApr
+    + incomeMay
+    + incomeJun
+    + incomeJul
+    + incomeAug
+    + incomeSep
+    + incomeOct
+    + incomeNov
+    + incomeDec
+  )
+  totalExpPct = (
+    expJan
+    + expFeb
+    + expMar
+    + expApr
+    + expMay
+    + expJun
+    + expJul
+    + expAug
+    + expSep
+    + expOct
+    + expNov
+    + expDec
+  )
 
   if totalIncomePct != 100:
     log("The total income percentages for the year must be 100%", "error")

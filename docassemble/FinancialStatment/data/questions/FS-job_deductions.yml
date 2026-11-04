@@ -90,7 +90,7 @@ code: |
   
     #c. Calculate income    
     mthIncome = mthReceipts - totMthExp 
-    wklyIncome = round(mthIncome/4.3, 0)	
+    wklyIncome = round(mthIncome/4.3, 0)  
     
     #if pctDone:
     employer[i].fedTaxDed 
@@ -143,9 +143,9 @@ code: |
     for y in employer:
       #1. Calculate weekly income
       #1.a. Salaried
-  	  if y.wage == False:    
-        SW = 's'
-		    tmpWklyBasePay = y.basePay / value(y.basePayFrequency)       
+      if y.wage == False:    
+        SW = "s"
+        tmpWklyBasePay = y.basePay / value(y.basePayFrequency)       
         if y.ynCommission:
           CB = 'c'
           tmpWklyComm = round(y.yrCommissions/52, 0)
@@ -156,11 +156,11 @@ code: |
           tmpWklyBonus = round(y.yrBonuses/52, 0)        
         else: 
           tmpWklyBonus = 0
-		    tmpWklyPay = round(tmpWklyBasePay, 0) + tmpWklyComm + tmpWklyBonus
+        tmpWklyPay = round(tmpWklyBasePay, 0) + tmpWklyComm + tmpWklyBonus
       #1.b. Hourly work
-	    elif y.wage == True:
+      elif y.wage == True:
         SW = 'w'
-		    tmpWklyPay = y.hrsPerWk * y.hrlyRate
+        tmpWklyPay = y.hrsPerWk * y.hrlyRate
         if y.ynOvertime:          
           tmpWklyOvertime = y.wklyOvertime
         else:
@@ -169,18 +169,18 @@ code: |
           tmpWklyTips = y.wklyTips
         else:
           tmpWklyTips = 0
-		    tmpWklyPay = round(tmpWklyPay, 0) + tmpWklyOvertime + tmpWklyTips
-	    #1.c. Self-employed
+        tmpWklyPay = round(tmpWklyPay, 0) + tmpWklyOvertime + tmpWklyTips
+      #1.c. Self-employed
       else:            
-        tmpWklyPay = wklyIncome	     
+        tmpWklyPay = wklyIncome       
         
       #2a. determine which pay bucket to fill  
-	    if y.jobType == 'fullTime':
-		    fullTimeWkPay += tmpWklyPay
-	    elif y.jobType == 'partTime':    
-		    partTimeWkPay += tmpWklyPay
-	    elif y.jobType == 'selfEmp':        
-		    selfEmpWkPay += tmpWklyPay   
+      if y.jobType == 'fullTime':
+        fullTimeWkPay += tmpWklyPay
+      elif y.jobType == 'partTime':    
+        partTimeWkPay += tmpWklyPay
+      elif y.jobType == 'selfEmp':        
+        selfEmpWkPay += tmpWklyPay   
         
       #2b. Accumudate overtime etc.
       commBonus += tmpWklyComm
@@ -191,47 +191,47 @@ code: |
       #3. Weekly itemized deductions
       #3.1 Federal deductions
       if y.wage == False:        
-		    tmpWklyFedDed = y.fedTaxDed / value(y.basePayFrequency)
+        tmpWklyFedDed = y.fedTaxDed / value(y.basePayFrequency)
         wklyFedDed = round(tmpWklyFedDed, 0)
-	    elif y.wage == True:
-		    wklyFedDed = y.fedTaxDed
-	    else:    
-		    wklyFedDed = 0 
+      elif y.wage == True:
+        wklyFedDed = y.fedTaxDed
+      else:    
+        wklyFedDed = 0 
       tmpFedClaimed = y.fedNumClaimed 
       tmpStClaimed = y.stateNumClaimed
       
       #3.2 State deductions
-      if y.wage == False:        		    
-		    tmpWklyStateDed = y.stateTaxDed / value(y.basePayFrequency)
+      if y.wage == False:                
+        tmpWklyStateDed = y.stateTaxDed / value(y.basePayFrequency)
         wklyStateDed = round(tmpWklyStateDed, 0)        
-	    elif y.wage == True:
-		    wklyStateDed = y.stateTaxDed
-	    else:    
-		    wklyStateDed = 0
+      elif y.wage == True:
+        wklyStateDed = y.stateTaxDed
+      else:    
+        wklyStateDed = 0
       #3.3 FICA and medicare deductions
       if y.wage == False:
-		    tmpWklyFicaDed = y.medicareTaxDed / value(y.basePayFrequency)
+        tmpWklyFicaDed = y.medicareTaxDed / value(y.basePayFrequency)
         wklyFicaDed = round(tmpWklyFicaDed, 0)
-	    elif y.wage == True:
-		    wklyFicaDed = y.medicareTaxDed
-	    else:    
-		    wklyFicaDed = 0
+      elif y.wage == True:
+        wklyFicaDed = y.medicareTaxDed
+      else:    
+        wklyFicaDed = 0
       #3.4 Medical deductions
       if y.wage == False:
-		    tmpWklyMedDed = y.medInsTaxDed / value(y.basePayFrequency)
+        tmpWklyMedDed = y.medInsTaxDed / value(y.basePayFrequency)
         wklyMedDed = round(tmpWklyMedDed, 0)
-	    elif y.wage == True:
-		    wklyMedDed = y.medInsTaxDed
-	    else:    
-		    wklyMedDed = 0 
+      elif y.wage == True:
+        wklyMedDed = y.medInsTaxDed
+      else:    
+        wklyMedDed = 0 
       #3.5 Union dues
       if y.wage == False: 
-		    tmpWklyUnionDed = y.unionDues / value(y.basePayFrequency)
+        tmpWklyUnionDed = y.unionDues / value(y.basePayFrequency)
         wklyUnionDed = round(tmpWklyUnionDed, 0)
-	    elif y.wage == True:
-		    wklyUnionDed = y.medInsTaxDed
-	    else:    
-		    wklyUnionDed = 0
+      elif y.wage == True:
+        wklyUnionDed = y.medInsTaxDed
+      else:    
+        wklyUnionDed = 0
       #3.6 Accumulate itemized deductions from all jobs
       wklyFedDed += wklyFedDed
       wklyStateDed += wklyStateDed
@@ -242,12 +242,12 @@ code: |
       #4. Weekly other deductions
       #4.1 Credit union deductions
       if y.wage == False:
-		    tmpWklyCreditDed = y.creditUnion / value(y.basePayFrequency)
+        tmpWklyCreditDed = y.creditUnion / value(y.basePayFrequency)
         wklyCreditDed = round(tmpWklyCreditDed, 0)
-	    elif y.wage == True:
-		    wklyCreditDed = y.creditUnion
-	    else:    
-		    wklyCreditDed = 0 
+      elif y.wage == True:
+        wklyCreditDed = y.creditUnion
+      else:    
+        wklyCreditDed = 0 
       if wklyCreditDed > 0:  
         if y.creditType == 'loan':
           LS = 'l'
@@ -256,28 +256,28 @@ code: |
         
       #4.2 Savings deductions
       if y.wage == False:
-		    tmpWklySavingsDed = y.savingsDed / value(y.basePayFrequency)
+        tmpWklySavingsDed = y.savingsDed / value(y.basePayFrequency)
         wklySavingsDed = round(tmpWklySavingsDed, 0)
-	    elif y.wage == True:
-		    wklySavingsDed = y.savingsDed
-	    else:    
-		    wklySavingsDed = 0
+      elif y.wage == True:
+        wklySavingsDed = y.savingsDed
+      else:    
+        wklySavingsDed = 0
       #4.3 Retirement saving deductions
       if y.wage == False: 
-		    tmpWklyRetDed = y.retDed / value(y.basePayFrequency)
+        tmpWklyRetDed = y.retDed / value(y.basePayFrequency)
         wklyRetDed = round(tmpWklyRetDed, 0)
-	    elif y.wage == True:
-		    wklyRetDed = y.retDed
-	    else:    
-		    wklyRetDed = 0        
+      elif y.wage == True:
+        wklyRetDed = y.retDed
+      else:    
+        wklyRetDed = 0        
       #4.4 Other weekly deductions
       if y.wage == False:
-		    tmpWklyOtherDed = y.otherDed / value(y.basePayFrequency)
+        tmpWklyOtherDed = y.otherDed / value(y.basePayFrequency)
         wklyOtherDed = round(tmpWklyOtherDed, 0)
-	    elif y.wage == True:
-		    wklyOtherDed = y.otherDed
-	    else:    
-		    wklyOtherDed = 0      
+      elif y.wage == True:
+        wklyOtherDed = y.otherDed
+      else:    
+        wklyOtherDed = 0      
       #4.5 Accumulate non-itemized deductions from all jobs
       wklyCreditDed += wklyCreditDed
       wklySavingsDed += wklySavingsDed
@@ -291,7 +291,7 @@ code: |
     #6. Add up all the non-itemized deductions from all jobs
     wklyTotNItemDed = wklyCreditDed + wklySavingsDed + wklyRetDed + wklyOtherDed
     #7 Add up all weekly income from all jobs
-	  wklyTotalJobIncome = fullTimeWkPay + partTimeWkPay +  selfEmpWkPay
+    wklyTotalJobIncome = fullTimeWkPay + partTimeWkPay +  selfEmpWkPay
 ---
 if: employed == False
 code: |

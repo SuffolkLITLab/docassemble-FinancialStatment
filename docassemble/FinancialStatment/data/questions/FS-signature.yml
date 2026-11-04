@@ -25,7 +25,7 @@ event: waiting_on_attorney
 question: |  
   Done for now.  
 subquestion: |    
-  Here is the form with your signature for your review. If you need to make any corrections, use the back button; otherwise please **ask ${ attorney } to go to [this link](${ interview_url(temporary=48) }) and register with the e-mail address ${ attorney.email }** to review your form and sign. This link will **expire in 48 hours** from now.
+  Here is the form with your signature for your review. If you need to make any corrections, use the back button; otherwise please **ask ${ attorney } to go to [this temporary link](${ interview_url(temporary=48) }) and register with the e-mail address ${ attorney.email }** to review your form and sign. This link will **expire in 48 hours** from now.
   
   Periodically you can use the button below the file to check the status. You won't be able to proceed until your lawyer has signed.
   
@@ -53,7 +53,7 @@ action buttons:
 ---
 event: attorney.endpoint
 code: |  
-  attorney.BBONum  
+  attorney.BBONum
 ---
 id: Attorney Address/Sig Date
 question: |
@@ -65,7 +65,7 @@ fields:
   - City/town: attorney.address.city
   - State: attorney.address.state
     code: |
-      states_list()	  
+      states_list()
   - Zip: attorney.address.zip
   - Phone number: attorney.TelNo
   - Your B.B.O. number: attorney.BBONum
@@ -82,5 +82,4 @@ under: |
   ${ attorney.name }
 ---
 code: |
-  goSign = bool(len(attorney.address.address)>0)
-
+  goSign = bool(len(attorney.address.address) > 0)

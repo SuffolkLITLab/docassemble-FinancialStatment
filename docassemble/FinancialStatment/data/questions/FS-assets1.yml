@@ -62,11 +62,11 @@ code: |
     count += 1
   if count == houses.target_number:    
     #Accumulate proptert value after the last property's info collected.
-	  TotalHouseVal = 0
+    TotalHouseVal = 0
     houses[0].hEquity = 0
-    for y in houses:           		
-		  y.hEquity = y.hMarketVal - y.hMort
-		  TotalHouseVal += y.hEquity
+    for y in houses:               
+      y.hEquity = y.hMarketVal - y.hMort
+      TotalHouseVal += y.hEquity
 ---
 if: ynHouse == False
 code: |    
@@ -122,8 +122,8 @@ code: |
     #Accumulate automobiles value after the last auto's info collected.  
     auto[0].equity = 0
     TotalAutoEqt = 0 
-	  for y in auto:           			  
-		  y.equity = max(0, y.carValue - y.carLoanAmt)      
+    for y in auto:                   
+      y.equity = max(0, y.carValue - y.carLoanAmt)      
       TotalAutoEqt += y.equity
 ---
 if: ynCar == False
@@ -138,7 +138,7 @@ comment: |
 id: Retirement Plans Number
 question: |
 subquestion: |
-	Enter information related to your retirement plans, including company provided plans and personal IRA plans, such as IRA, Keogh, 401(k), Pension, Profit Sharing plans and others.
+  Enter information related to your retirement plans, including company provided plans and personal IRA plans, such as IRA, Keogh, 401(k), Pension, Profit Sharing plans and others.
 fields:
   - html: <span class="groupTitle">Retirement Plans</span>
   - Are you participating any retirement plan?: ynRetPlan
@@ -166,16 +166,16 @@ fields:
     datatype: currency
     help: |
       Use your benefit statement to find this number, it is called the  "Present Value" or "Lump Sum" of your benefit when you are eligible to retire.
-	- Do you have an account number for it?: retPlans[i].ynRetPlanAcct
-	  datatype: yesnoradio
+  - Do you have an account number for it?: retPlans[i].ynRetPlanAcct
+    datatype: yesnoradio
   - Financial institution name: retPlans[i].instituteName
-	  show if:
-		  variable: retPlans[i].ynRetPlanAcct
-		  is: True
+    show if:
+      variable: retPlans[i].ynRetPlanAcct
+      is: True
   - Account number for this plan: retPlans[i].acctNum
-	  show if:
-		  variable: retPlans[i].ynRetPlanAcct
-		  is: True
+    show if:
+      variable: retPlans[i].ynRetPlanAcct
+      is: True
 section: Assets
 progress: 70
 ---
@@ -193,7 +193,7 @@ code: |
     #Accumulate retirement plans values after the last plan's info is collected.  
     retPlans[0].fullName = ''
     totRetPlanVal = 0
-	  for y in retPlans:    
+    for y in retPlans:    
       totRetPlanVal += y.amt
       if y.ynRetPlanAcct:
         y.fullName = y.name.text + '/' + y.instituteName + '/' + y.acctNum

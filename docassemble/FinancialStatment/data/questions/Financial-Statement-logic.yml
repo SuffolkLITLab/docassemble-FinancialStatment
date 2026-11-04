@@ -38,21 +38,21 @@ objects:
 initial: true
 code: |
   multi_user = True
-  role = 'client'
+  role = "client"
   if user_logged_in():
-    if not defined('client.email'):
-      client.email = user_info().email     
-    if user_info().email == client.email:      
-      role = 'client'
-    elif user_info().email == attorney.email:	    
-      role = 'attorney'
+    if not defined("client.email"):
+      client.email = user_info().email
+    if user_info().email == client.email:
+      role = "client"
+    elif user_info().email == attorney.email:
+      role = "attorney"
     else:
       user_kicked_out
-  else:  
+  else:
     user_must_log_in
-  process_action()  
-  
-  if role == 'client':
+  process_action()
+
+  if role == "client":
     if returning_user(minutes=0.5):
       welcome_back
 ---
@@ -61,47 +61,47 @@ code: |
 #--------------------------------------------------------
 mandatory: true
 code: |      
-  if role == 'client':
+  if role == "client":
     # 1. Intro screen
-    sees_nav_bar  
+    sees_nav_bar
     # 2. FS-personal.yml
-    employed 
-    
+    employed
+
     # 3. Job Income
-    if employed: 
+    if employed:
       # 3.1. FS-job_income1.yml
       for k in range(employer.target_number):
-        employer[k].jobType # Job Type and ER Info
+        employer[k].jobType  # Job Type and ER Info
         if employer[k].jobType == "fullTime" or employer[k].jobType == "partTime":
-          employer[k].wage # Job income details        
+          employer[k].wage  # Job income details
         # 3.2. FS-job_income2.yml
         elif employer[k].jobType == "selfEmp":
           mthReceipts
           ynSeasonal
           if ynSeasonal:
             incomeJan
-            totalIncomePct  # error check       
-          acctYr # Accounting basis    
-          employer[k].wage = ''
-        # 3.3. FS-job_deductions.yml     
-        employer[k].fedTaxDed # Do it only if employed
-      wklyTotalJobIncome # Do it for everyone
-    
+            totalIncomePct  # error check
+          acctYr  # Accounting basis
+          employer[k].wage = ""
+        # 3.3. FS-job_deductions.yml
+        employer[k].fedTaxDed  # Do it only if employed
+      wklyTotalJobIncome  # Do it for everyone
+
     # 4. Non-job income
-    nonJobIncome # FS-other_income1.yml
+    nonJobIncome  # FS-other_income1.yml
     if nonJobIncome:
       annuityAmt
       if ynRentIncome:
-        annRentRecived # FS-other_income2.yml     
-      else: # I suppose rent income doesn't deduct in advance?
-        OtherIncome_fedTaxDed #FS-otherIncome_deductions.yml
-    wklyNetIncome # Do it for everyone; if no such income, set defaults
-    
+        annRentRecived  # FS-other_income2.yml
+      else:  # I suppose rent income doesn't deduct in advance?
+        OtherIncome_fedTaxDed  # FS-otherIncome_deductions.yml
+    wklyNetIncome  # Do it for everyone; if no such income, set defaults
+
     # 5. Expenses
-    mthlyRent # FS-expenses.yml
+    mthlyRent  # FS-expenses.yml
     estlegalFeeMax
     wklyTotalExpense
-    
+
     # 6. Assets
     # FS-assets1.yml
     if ynHouse:
@@ -115,8 +115,8 @@ code: |
         retPlans[k].name.text
     # FS-assets2.yml
     if yndeferredPlan:
-      for k in range(deferredPlan.target_number): 
-       deferredPlan[k].name.text
+      for k in range(deferredPlan.target_number):
+        deferredPlan[k].name.text
     if ynlifeInsurance:
       for k in range(lifeInsurance.target_number):
         lifeInsurance[k].name.text
@@ -126,28 +126,28 @@ code: |
     if ynOtherAssets:
       for k in range(otherAssets.target_number):
         otherAssets[k].name.text
-    assetsDone    
-    
-    # 7. Debts 
+    assetsDone
+
+    # 7. Debts
     if ynDebts:
       for k in range(debts.target_number):
         debts[k].name.text
       TotalDebtPmt
-      
+
     # 8. Signatures
     client.signature
     client.signatureDate
-    #client.endpoint
-    if ynLawyer and not defined('attorney.signature'):   
-      waiting_on_attorney      
+    # client.endpoint
+    if ynLawyer and not defined("attorney.signature"):
+      waiting_on_attorney
     else:
       final_screen
-  elif role == 'attorney':
-    if not defined('attorney.signature'):   
+  elif role == "attorney":
+    if not defined("attorney.signature"):
       if goSign:
         attorney.signature
       else:
-        pre_attorney_signature      
+        pre_attorney_signature
     else:
       final_screen
 ---
@@ -164,7 +164,7 @@ sections:
 ---
 mandatory: True
 code: |
-  menu_items = [ action_menu_item('Roadmap', 'road_map') ]
+  menu_items = [action_menu_item("Roadmap", "road_map")]
 ---
 event: user_kicked_out
 id: "you are not authorized"
