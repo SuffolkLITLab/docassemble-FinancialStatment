@@ -4,7 +4,7 @@ comment: |
 id: Deferred Annuities Number
 question: |
 subquestion: |
-	Enter information related to your deferred annuities, such as a 403(b) plan offered from a job, or you bought one from a bank or similar financial institution.
+  Enter information related to your deferred annuities, such as a 403(b) plan offered from a job, or you bought one from a bank or similar financial institution.
 fields:
   - html: <span class="groupTitle">Deferred Annuities</span>
   - Do you have any deferred annuity from a job or a bank etc.?: yndeferredPlan
@@ -44,8 +44,8 @@ code: |
   if count == deferredPlan.target_number:    
     #Accumulate deferred plans value after the last plan's info collected.  
     TotaldefVal = 0
-	  for y in deferredPlan:           		
-		  TotaldefVal += y.amt
+    for y in deferredPlan:               
+      TotaldefVal += y.amt
 ---
 if: yndeferredPlan == False
 code: | 
@@ -59,7 +59,7 @@ comment: |
 id: Life Insurance Number
 question: |
 subquestion: |
-	Enter life insurance info.
+  Enter life insurance info.
 fields:
   - html: <span class="groupTitle">Life Insurance</span>
   - Do you own any life insurance policy?: ynlifeInsurance
@@ -99,8 +99,8 @@ code: |
   if count == lifeInsurance.target_number:     
     #Accumulate life insurance values after the last policy's info collected.
     totLifeInsVal = 0
-	  for y in lifeInsurance:           		
-		  totLifeInsVal += y.amt
+    for y in lifeInsurance:               
+      totLifeInsVal += y.amt
 ---
 if: ynlifeInsurance == False
 code: | 
@@ -114,7 +114,7 @@ comment: |
 id: Personal Savings Number
 question: |
 subquestion: |
-	Enter information related to your personal savings, whether in your name, jointly or in the name of another for your benefit or your children's benefit. This include all the savings and checking accounts, money market accounts, certificate of deposits.
+  Enter information related to your personal savings, whether in your name, jointly or in the name of another for your benefit or your children's benefit. This include all the savings and checking accounts, money market accounts, certificate of deposits.
 fields:
   - html: <span class="groupTitle">Personal Savings</span>
   - Do you have any savings in a bank or similar financial institution?: ynSavingsPlan
@@ -137,8 +137,8 @@ subquestion: |
   % endif
 fields:    
   - Financial institution name/account number: savingsPlan[i].name.text
-	  help: |
-		  For example, Bank of America/123456789.   
+    help: |
+      For example, Bank of America/123456789.   
   - Savings amount in this account: savingsPlan[i].amt
     datatype: currency
 section: Assets
@@ -157,8 +157,8 @@ code: |
   if count == savingsPlan.target_number:
     #Accumulate savings plans value after the last plan's info collected.  
     TotalSavingsVal = 0
-	  for y in savingsPlan:           		
-		  TotalSavingsVal += y.amt
+    for y in savingsPlan:               
+      TotalSavingsVal += y.amt
 ---
 if: ynSavingsPlan == False
 code: | 
@@ -172,7 +172,7 @@ comment: |
 id: Other Assets Number
 question: |
 subquestion: |
-	Enter other assets information, for example, stocks, bonds and collections.
+  Enter other assets information, for example, stocks, bonds and collections.
 fields:
   - html: <span class="groupTitle">Other Assets</span>
   - Do you own other assets?: ynOtherAssets
@@ -196,7 +196,7 @@ subquestion: |
   % endif
 fields:    
   - Asset name: otherAssets[i].name.text
-	  hint: bond name, stock name, collection name
+    hint: bond name, stock name, collection name
   - Asset value: otherAssets[i].amt
     datatype: currency
 section: Assets
@@ -214,8 +214,8 @@ code: |
   if count == otherAssets.target_number:
     #Accumulate other asset values after the last one is collected.
     TotalOtherAssetsVal = 0
-	  for y in otherAssets:           		
-		  TotalOtherAssetsVal += y.amt
+    for y in otherAssets:               
+      TotalOtherAssetsVal += y.amt
 ---
 if: ynOtherAssets == False
 code: | 

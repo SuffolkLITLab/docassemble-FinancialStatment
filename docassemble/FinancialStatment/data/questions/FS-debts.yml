@@ -64,10 +64,10 @@ code: |
     TotalDebtDue = 0
     TotalDebtPmt = 0
     debts[0].wklyPmt = 0   
-	  for y in debts:         
+    for y in debts:         
       tmpAnnPmt = int(y.PayFrequency) * y.payment
-		  y.wklyPmt = round(tmpAnnPmt/52, 0)
-		  TotalDebtDue += y.amtDue
+      y.wklyPmt = round(tmpAnnPmt/52, 0)
+      TotalDebtDue += y.amtDue
       TotalDebtPmt += y.wklyPmt 
 ---
 if: ynDebts == False
